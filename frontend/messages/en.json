@@ -1,0 +1,145 @@
+{
+  "brand": {
+    "short": "Compass",
+    "full": "Future Space Company – Compass for Business Development"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "packages": "Packages & Pricing",
+    "sectors": "Sectors",
+    "insights": "Insights",
+    "articles": "Articles & Insights",
+    "news": "News & Announcements",
+    "caseStudies": "Case Studies",
+    "ecosystem": "Compass Ecosystem",
+    "partner": "Partner or Get Sponsored",
+    "contact": "Contact",
+    "bookConsultation": "Book a Consultation",
+    "menu": "Menu",
+    "close": "Close",
+    "switchToArabic": "العربية",
+    "switchToEnglish": "English"
+  },
+  "common": {
+    "readMore": "Read more",
+    "learnMore": "Learn more",
+    "viewAll": "View all",
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you are looking for doesn’t exist or has moved.",
+    "backHome": "Back to home",
+    "search": "Search",
+    "searchPlaceholder": "Search articles, services, sectors…",
+    "noResults": "No results found",
+    "readingTime": "{minutes} min read",
+    "publishedOn": "Published {date}",
+    "sharePage": "Share",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied",
+    "downloadPdf": "Download PDF",
+    "expired": "Expired / Archived",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "phone": "Phone",
+    "emptyState": "Nothing here yet."
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Management consulting in Baghdad",
+      "title": "A clear compass for your business decisions",
+      "subtitle": "Strategic planning, organizational restructuring, business-systems development and marketing consulting — grounded in the Iraqi market.",
+      "cta": "Book a Consultation",
+      "secondaryCta": "Explore services"
+    },
+    "problems": {
+      "title": "Problems we help companies solve",
+      "subtitle": "From unclear strategy to fragmented operations, we turn complexity into an executable plan."
+    },
+    "about": { "title": "About Compass" },
+    "services": { "title": "Core services", "subtitle": "Advisory built around your goals." },
+    "featuredPackages": { "title": "Packages & consulting products", "subtitle": "Clear scopes, deliverables and pricing." },
+    "sectors": { "title": "Sectors we serve", "subtitle": "Sector-aware advisory across the Iraqi economy." },
+    "methodology": {
+      "title": "How Compass works",
+      "subtitle": "A structured method that keeps every engagement pointed in the right direction."
+    },
+    "caseStudies": { "title": "Case studies & results", "subtitle": "Outcomes from selected engagements." },
+    "ecosystem": { "title": "The Compass Ecosystem", "subtitle": "Sister companies, brands and initiatives." },
+    "latestArticles": { "title": "Latest articles & studies" },
+    "latestNews": { "title": "Latest news & announcements" },
+    "consultationCta": {
+      "title": "Ready to set a clear direction?",
+      "subtitle": "Book a consultation and let’s map your next step.",
+      "cta": "Book a Consultation"
+    },
+    "contact": { "title": "Get in touch", "subtitle": "We’d love to hear about your project." }
+  },
+  "footer": {
+    "tagline": "A clear compass for business development in Iraq.",
+    "quickLinks": "Quick links",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "contact": "Contact",
+    "newsletter": "Newsletter",
+    "newsletterHint": "Updates coming soon.",
+    "rights": "All rights reserved.",
+    "placeholderNotice": "This site uses placeholder content pending client approval."
+  },
+  "packages": {
+    "pricing": {
+      "fixed": "Fixed price",
+      "starting_from": "Starts from",
+      "custom_quote": "Custom quote"
+    },
+    "requestService": "Request service",
+    "bookConsultation": "Book a consultation",
+    "whatsIncluded": "What’s included",
+    "deliverables": "Deliverables",
+    "duration": "Duration",
+    "sessions": "Sessions",
+    "targetAudience": "Who it’s for",
+    "clientResponsibilities": "Your responsibilities",
+    "paymentTerms": "Payment terms",
+    "exclusions": "Not included",
+    "faqs": "Frequently asked questions"
+  },
+  "sectors": {
+    "definition": "Overview",
+    "currentState": "Current state in Iraq",
+    "challenges": "Key challenges",
+    "servicesOffered": "How we help",
+    "sampleProjects": "Sample projects & solutions",
+    "relatedCaseStudies": "Related case studies",
+    "relatedArticles": "Related articles",
+    "requestConsultation": "Request a consultation for this sector"
+  },
+  "news": {
+    "active": "Active",
+    "archive": "Archive",
+    "register": "Register"
+  },
+  "forms": {
+    "submit": "Submit",
+    "submitting": "Submitting…",
+    "successTitle": "Thank you — we’ve received your request",
+    "successBody": "Your reference number is {reference}. We’ll be in touch soon.",
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "fileTooLarge": "File is too large",
+    "invalidFileType": "Unsupported file type",
+    "dropFiles": "Drag files here or click to upload",
+    "removeFile": "Remove",
+    "genericError": "Please check the form and try again.",
+    "sponsorshipNotice": "Submitting an application does not imply approval of funding or sponsorship. All applications are subject to review, evaluation and negotiation according to Compass's priorities, criteria and internal capabilities."
+  },
+  "consent": {
+    "message": "We use cookies for analytics to improve the site. You can accept or decline.",
+    "accept": "Accept",
+    "decline": "Decline"
+  }
+}

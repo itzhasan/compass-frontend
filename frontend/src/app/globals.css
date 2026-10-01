@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/*
+| ─────────────────────────────────────────────────────────────────────────
+| Design tokens — the ONE place to swap in Compass's official brand kit.
+| Colors, fonts and radii are CSS variables; change them here and the whole
+| site updates. Placeholder palette: deep ink/navy primary, warm neutrals,
+| one restrained gold accent.
+| ─────────────────────────────────────────────────────────────────────────
+*/
+:root {
+  --font-arabic: var(--font-plex-arabic), system-ui, sans-serif;
+  --font-latin: var(--font-inter), system-ui, sans-serif;
+
+  --color-bg: #ffffff;
+  --color-surface: #f7f6f3;
+  --color-surface-2: #efece6;
+  --color-border: #e2ddd4;
+  --color-fg: #1a1f2b;
+  --color-muted: #5c6472;
+
+  --color-primary: #1e2a4a;
+  --color-primary-hover: #16203a;
+  --color-primary-fg: #ffffff;
+
+  --color-accent: #c8a250;
+  --color-accent-hover: #b38f3f;
+  --color-accent-fg: #1a1f2b;
+
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-lg: 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0e1220;
+    --color-surface: #161b2c;
+    --color-surface-2: #1e2438;
+    --color-border: #2a3149;
+    --color-fg: #eef1f6;
+    --color-muted: #9aa3b5;
+
+    --color-primary: #4f6bd4;
+    --color-primary-hover: #6076d8;
+    --color-primary-fg: #0e1220;
+
+    --color-accent: #d8b968;
+    --color-accent-hover: #e2c67d;
+    --color-accent-fg: #0e1220;
+  }
+}
+
+/* Map tokens into Tailwind's theme so utilities (bg-primary, text-muted, …) work. */
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-border: var(--color-border);
+  --color-fg: var(--color-fg);
+  --color-muted: var(--color-muted);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-fg: var(--color-primary-fg);
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-fg: var(--color-accent-fg);
+
+  --font-sans: var(--font-latin);
+  --radius-DEFAULT: var(--radius);
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+/* Arabic gets its own font + slightly looser line-height for readability. */
+html[lang="ar"] body {
+  font-family: var(--font-arabic);
+  line-height: 1.85;
+}
+html[lang="en"] body {
+  font-family: var(--font-latin);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Rich-text content coming from the API. */
+.prose-content :where(h2, h3) {
+  font-weight: 700;
+  margin-block: 1.5em 0.5em;
+  line-height: 1.3;
+}
+.prose-content :where(p, ul, ol) {
+  margin-block: 0.75em;
+}
+.prose-content :where(ul, ol) {
+  padding-inline-start: 1.5em;
+}
+.prose-content :where(ul) { list-style: disc; }
+.prose-content :where(ol) { list-style: decimal; }
+.prose-content :where(a) {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
