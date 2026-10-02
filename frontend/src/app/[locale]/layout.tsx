@@ -5,6 +5,7 @@ import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 
 import { AnalyticsConsent } from "@/components/AnalyticsConsent";
+import { HideOnHome } from "@/components/landing/HomeChrome";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
@@ -85,7 +86,9 @@ export default async function LocaleLayout({
           <main id="main" className="flex-1">
             {children}
           </main>
-          <Footer brand={brand("short")} settings={settings} />
+          <HideOnHome>
+            <Footer brand={brand("short")} settings={settings} />
+          </HideOnHome>
           <WhatsAppButton phone={whatsapp} />
           <AnalyticsConsent
             ga4Id={settings.analytics.ga4_id}

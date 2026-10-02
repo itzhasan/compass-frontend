@@ -161,6 +161,33 @@ body {
   animation: compass-spin 160s linear infinite;
 }
 
+/* Landing (Al-Bawsala replica) — cool periwinkle gradient for the hero headline
+   first line and the large stat figures. */
+.text-gradient-cool {
+  background: linear-gradient(180deg, #d4ddff 0%, #9aa9dc 55%, #6f7ea8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Soft white halo behind the hero headline, as on the reference. */
+.text-glow {
+  text-shadow: 0 0 44px rgba(176, 192, 255, 0.28), 0 2px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Logo marquees in the Clients section. Tracks hold two copies of the list and
+   translate by -50% so the loop is seamless; the reversed variant scrolls the
+   opposite way. Edges fade via a horizontal mask. */
+@keyframes landing-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track { display: flex; width: max-content; animation: landing-marquee 46s linear infinite; }
+.marquee-track-rev { display: flex; width: max-content; animation: landing-marquee 58s linear infinite reverse; }
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+
 /* Scroll-reveal — CSS-only via scroll-driven animations where supported. */
 @keyframes reveal-rise {
   from { opacity: 0; transform: translateY(26px); }
