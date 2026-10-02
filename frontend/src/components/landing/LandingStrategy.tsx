@@ -6,14 +6,15 @@ import type { LandingContent } from "./content";
 type Point = LandingContent["strategy"]["points"][number];
 
 // Six compass bearings around the hub (percentages of the square), clockwise
-// from the top: N, NE, SE, S, SW, NW.
+// from the top: N, NE, SE, S, SW, NW. These are physical (left-based) anchors,
+// so they're direction-agnostic — the compass is symmetric.
 const POS = [
-  { left: "50%", top: "9%" },
-  { left: "85%", top: "30%" },
-  { left: "85%", top: "70%" },
-  { left: "50%", top: "91%" },
-  { left: "15%", top: "70%" },
-  { left: "15%", top: "30%" },
+  { left: "50%", top: "15%" },
+  { left: "82%", top: "33%" },
+  { left: "82%", top: "67%" },
+  { left: "50%", top: "85%" },
+  { left: "18%", top: "67%" },
+  { left: "18%", top: "33%" },
 ];
 
 function Card({ point, highlight }: { point: Point; highlight?: boolean }) {
@@ -61,7 +62,7 @@ export function LandingStrategy({ strategy }: { strategy: LandingContent["strate
         <div className="relative mx-auto hidden aspect-square w-full max-w-3xl lg:block">
           <CompassMark className="pointer-events-none absolute inset-0 h-full w-full text-white/[0.06]" />
           {/* Hub */}
-          <div className="absolute start-1/2 top-1/2 flex h-44 w-44 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-border bg-[var(--color-ink-2)] text-center rtl:translate-x-1/2">
+          <div className="absolute left-1/2 top-1/2 flex h-44 w-44 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-border bg-[var(--color-ink-2)] text-center">
             <span className="display-heading text-2xl text-fg">{strategy.centerTitle}</span>
             <span dir="ltr" className="section-label mt-1">{strategy.centerSub}</span>
           </div>
@@ -69,7 +70,7 @@ export function LandingStrategy({ strategy }: { strategy: LandingContent["strate
           {strategy.points.map((p, i) => (
             <div
               key={p.num}
-              className="absolute w-64 -translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2"
+              className="absolute w-64 -translate-x-1/2 -translate-y-1/2"
               style={{ left: POS[i].left, top: POS[i].top }}
             >
               <Card point={p} highlight={i === 0} />

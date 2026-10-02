@@ -1,4 +1,5 @@
-import { CompassMark } from "@/components/ui/CompassMark";
+import Image from "next/image";
+
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import type { LandingContent } from "./content";
@@ -11,10 +12,21 @@ import type { LandingContent } from "./content";
 export function LandingHero({ hero }: { hero: LandingContent["hero"] }) {
   return (
     <section id="top" className="ink-glow relative isolate overflow-hidden">
-      {/* Rotating compass dial + needle motif. Centering lives on the wrapper so
-          the spin (a rotate keyframe) never fights the translate. */}
+      {/* Rotating compass-logo motif. Centering lives on the wrapper so the spin
+          (a rotate keyframe) never fights the translate; a radial mask fades the
+          logo's square edges into the dark band. */}
       <div className="pointer-events-none absolute start-1/2 top-1/2 h-[min(150vw,56rem)] w-[min(150vw,56rem)] -translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2">
-        <CompassMark showNeedle className="compass-spin h-full w-full text-white/[0.07]" />
+        <Image
+          src="/logo.jpeg"
+          alt=""
+          fill
+          sizes="(max-width: 768px) 150vw, 56rem"
+          className="compass-spin object-contain opacity-[0.16]"
+          style={{
+            maskImage: "radial-gradient(circle, #000 52%, transparent 70%)",
+            WebkitMaskImage: "radial-gradient(circle, #000 52%, transparent 70%)",
+          }}
+        />
       </div>
 
       <Container className="relative flex min-h-[94vh] flex-col items-center justify-center py-28 text-center">

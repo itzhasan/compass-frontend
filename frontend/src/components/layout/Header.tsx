@@ -2,11 +2,11 @@
 
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { Link, usePathname } from "@/i18n/navigation";
 import { ButtonLink } from "@/components/ui/Button";
-import { CompassLogo } from "@/components/ui/CompassLogo";
 import { cn } from "@/lib/cn";
 
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -71,7 +71,7 @@ export function Header({ brand }: { brand: string }) {
           )}
           onClick={() => setDrawerOpen(false)}
         >
-          <CompassLogo className="h-7 w-7 text-accent" />
+          <Image src="/logo.jpeg" alt="" width={28} height={28} className="h-7 w-7 rounded-[var(--radius-sm)]" priority />
           {brand}
         </Link>
 

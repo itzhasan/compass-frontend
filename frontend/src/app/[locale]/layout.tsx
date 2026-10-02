@@ -41,6 +41,7 @@ export async function generateMetadata({
     metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
     title: { default: t("full"), template: `%s | ${t("short")}` },
     description: t("full"),
+    icons: { icon: "/logo.jpeg", shortcut: "/logo.jpeg", apple: "/logo.jpeg" },
   };
 }
 
