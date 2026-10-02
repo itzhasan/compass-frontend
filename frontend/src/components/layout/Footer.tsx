@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { CompassMark } from "@/components/ui/CompassMark";
+import { CompassLogo } from "@/components/ui/CompassLogo";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import type { Settings } from "@/lib/api/types";
@@ -34,7 +34,7 @@ export async function Footer({ brand, settings }: { brand: string; settings: Set
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="flex items-center gap-2 text-lg font-bold text-fg">
-              <CompassMark className="h-7 w-7 text-accent" />
+              <CompassLogo className="h-7 w-7 text-accent" />
               {brand}
             </p>
             <p className="mt-3 text-sm text-muted">{t("tagline")}</p>

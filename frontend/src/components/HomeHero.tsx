@@ -1,4 +1,4 @@
-import { CompassMark } from "@/components/ui/CompassMark";
+import { CompassLogo } from "@/components/ui/CompassLogo";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 
@@ -26,13 +26,12 @@ export function HomeHero({
 }) {
   return (
     <section className="ink-glow relative isolate overflow-hidden">
-      {/* Compass dial motif — large, faint, centered behind the content. */}
-      <CompassMark className="pointer-events-none absolute start-1/2 top-1/2 h-[min(135vw,52rem)] w-[min(135vw,52rem)] -translate-x-1/2 -translate-y-1/2 text-white/[0.06] rtl:translate-x-1/2" />
-      {/* Thin gold needle — subtle, overlaid on the faint dial, slightly off-north. */}
-      <CompassMark
-        needleOnly
-        className="pointer-events-none absolute start-1/2 top-1/2 h-[min(70vw,24rem)] w-[min(70vw,24rem)] -translate-x-1/2 -translate-y-1/2 -rotate-[24deg] text-white opacity-25 rtl:translate-x-1/2"
-      />
+      {/* Brand compass mark — large and faint, centred behind the content and
+          rotating slowly. Centering lives on the wrapper; the spin (a `rotate`
+          keyframe) lives on the SVG so the two transforms don't collide. */}
+      <div className="pointer-events-none absolute start-1/2 top-1/2 h-[min(135vw,52rem)] w-[min(135vw,52rem)] -translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2">
+        <CompassLogo className="compass-spin h-full w-full text-white/[0.06]" />
+      </div>
 
       <Container className="relative flex min-h-[82vh] flex-col items-center justify-center py-28 text-center">
         <p className="section-label rounded-full border border-[var(--color-ink-border)] px-4 py-1.5 text-[var(--color-ink-muted)]">

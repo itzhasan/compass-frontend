@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { Link, usePathname } from "@/i18n/navigation";
 import { ButtonLink } from "@/components/ui/Button";
-import { CompassMark } from "@/components/ui/CompassMark";
+import { CompassLogo } from "@/components/ui/CompassLogo";
 import { cn } from "@/lib/cn";
 
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -71,7 +71,7 @@ export function Header({ brand }: { brand: string }) {
           )}
           onClick={() => setDrawerOpen(false)}
         >
-          <CompassMark className="h-7 w-7 text-accent" />
+          <CompassLogo className="h-7 w-7 text-accent" />
           {brand}
         </Link>
 
