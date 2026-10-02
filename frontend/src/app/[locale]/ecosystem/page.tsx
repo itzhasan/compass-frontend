@@ -35,6 +35,8 @@ export default async function EcosystemPage({ params }: { params: Promise<{ loca
   return (
     <>
       <PageHeader
+        label="Ecosystem"
+        index={7}
         title={t("ecosystem")}
         subtitle={th("ecosystem.subtitle")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("ecosystem") }]} />}

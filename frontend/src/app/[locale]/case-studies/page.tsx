@@ -26,6 +26,8 @@ export default async function CaseStudiesPage({ params }: { params: Promise<{ lo
   return (
     <>
       <PageHeader
+        label="Clients"
+        index={6}
         title={t("caseStudies")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("caseStudies") }]} />}
       />

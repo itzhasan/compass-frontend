@@ -4,8 +4,8 @@
 | ─────────────────────────────────────────────────────────────────────────
 | Design tokens — the ONE place to swap in Compass's official brand kit.
 | Colors, fonts and radii are CSS variables; change them here and the whole
-| site updates. Placeholder palette: deep ink/navy primary, warm neutrals,
-| one restrained gold accent.
+| site updates. Palette: deep ink/navy primary, warm neutrals, restrained
+| gold accent. Light is the default; dark mirrors the Al-Bawsala night look.
 | ─────────────────────────────────────────────────────────────────────────
 */
 :root {
@@ -15,41 +15,50 @@
   --color-bg: #ffffff;
   --color-surface: #f7f6f3;
   --color-surface-2: #efece6;
-  --color-border: #e2ddd4;
-  --color-fg: #1a1f2b;
+  --color-border: #e4ded3;
+  --color-fg: #141924;
   --color-muted: #5c6472;
 
-  --color-primary: #1e2a4a;
-  --color-primary-hover: #16203a;
+  --color-primary: #16203a;
+  --color-primary-hover: #0f1830;
   --color-primary-fg: #ffffff;
 
-  --color-accent: #c8a250;
-  --color-accent-hover: #b38f3f;
-  --color-accent-fg: #1a1f2b;
+  --color-accent: #c29433;
+  --color-accent-hover: #ac8129;
+  --color-accent-fg: #141924;
+
+  /* Dark-canvas tokens — used by hero/compass bands even in light mode. */
+  --color-ink: #070a12;
+  --color-ink-2: #0c111d;
+  --color-ink-fg: #eef1f7;
+  --color-ink-muted: #8a93a6;
+  --color-ink-border: #1c2334;
 
   --radius: 0.75rem;
   --radius-sm: 0.5rem;
   --radius-lg: 1.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #0e1220;
-    --color-surface: #161b2c;
-    --color-surface-2: #1e2438;
-    --color-border: #2a3149;
-    --color-fg: #eef1f6;
-    --color-muted: #9aa3b5;
+:root[data-theme="dark"],
+html.dark,
+[data-theme="dark"] {
+  --color-bg: #070a12;
+  --color-surface: #0c111d;
+  --color-surface-2: #121829;
+  --color-border: #1c2334;
+  --color-fg: #eef1f7;
+  --color-muted: #8a93a6;
 
-    --color-primary: #4f6bd4;
-    --color-primary-hover: #6076d8;
-    --color-primary-fg: #0e1220;
+  --color-primary: #e7ecf5;
+  --color-primary-hover: #ffffff;
+  --color-primary-fg: #0a0e18;
 
-    --color-accent: #d8b968;
-    --color-accent-hover: #e2c67d;
-    --color-accent-fg: #0e1220;
-  }
+  --color-accent: #d8b968;
+  --color-accent-hover: #e4c982;
+  --color-accent-fg: #0a0e18;
 }
+
+/* Light is the default; dark is opt-in via the theme toggle (data-theme="dark"). */
 
 /* Map tokens into Tailwind's theme so utilities (bg-primary, text-muted, …) work. */
 @theme inline {
@@ -66,6 +75,12 @@
   --color-accent-hover: var(--color-accent-hover);
   --color-accent-fg: var(--color-accent-fg);
 
+  --color-ink: var(--color-ink);
+  --color-ink-2: var(--color-ink-2);
+  --color-ink-fg: var(--color-ink-fg);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-border: var(--color-ink-border);
+
   --font-sans: var(--font-latin);
   --radius-DEFAULT: var(--radius);
 }
@@ -73,6 +88,7 @@
 html {
   background: var(--color-bg);
   color: var(--color-fg);
+  scroll-behavior: smooth;
 }
 
 /* Arabic gets its own font + slightly looser line-height for readability. */
@@ -90,6 +106,63 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/*
+| ─────────────────────────────────────────────────────────────────────────
+| Brand design-language utilities (reference: Al-Bawsala)
+| ─────────────────────────────────────────────────────────────────────────
+*/
+
+/* Numbered eyebrow label — "SERVICES — 04" in spaced Latin caps. */
+.section-label {
+  font-family: var(--font-latin);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Display heading — large, tight, for section + page titles. */
+.display-heading {
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+/* A dark "ink" band (hero, compass sections) regardless of page theme. */
+.ink-band {
+  background: var(--color-ink);
+  color: var(--color-ink-fg);
+}
+.ink-band .text-muted { color: var(--color-ink-muted) !important; }
+
+/* Soft radial glow used behind hero content. */
+.ink-glow {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(124, 142, 196, 0.16) 0%, transparent 70%),
+    var(--color-ink);
+}
+
+/* Hairline divider used between editorial sections. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-border), transparent);
+}
+
+/* Scroll-reveal — CSS-only via scroll-driven animations where supported. */
+@keyframes reveal-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+.reveal {
+  animation: reveal-rise both linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 22%;
+}
+@supports not (animation-timeline: view()) {
+  .reveal { animation: none; opacity: 1; transform: none; }
+}
+
 /* Rich-text content coming from the API. */
 .prose-content :where(h2, h3) {
   font-weight: 700;
@@ -105,14 +178,18 @@ body {
 .prose-content :where(ul) { list-style: disc; }
 .prose-content :where(ol) { list-style: decimal; }
 .prose-content :where(a) {
-  color: var(--color-primary);
+  color: var(--color-accent);
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-timeline: auto !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .reveal { opacity: 1 !important; transform: none !important; }
 }

@@ -49,6 +49,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   return (
     <>
       <PageHeader
+        label="About"
+        index={1}
         title={page?.title ?? t("about")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("about") }]} />}
       />

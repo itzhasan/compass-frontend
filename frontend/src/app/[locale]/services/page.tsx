@@ -26,6 +26,8 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   return (
     <>
       <PageHeader
+        label="Services"
+        index={3}
         title={t("services")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("services") }]} />}
       />

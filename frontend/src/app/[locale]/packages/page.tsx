@@ -40,6 +40,8 @@ export default async function PackagesPage({
   return (
     <>
       <PageHeader
+        label="Packages"
+        index={4}
         title={t("packages")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("packages") }]} />}
       />

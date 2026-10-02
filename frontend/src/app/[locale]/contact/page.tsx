@@ -28,6 +28,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   return (
     <>
       <PageHeader
+        label="Contact"
         title={t("contact")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("contact") }]} />}
       />

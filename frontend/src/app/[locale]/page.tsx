@@ -10,6 +10,7 @@ import {
   SectorCard,
   ServiceCard,
 } from "@/components/cards/ContentCards";
+import { HomeHero } from "@/components/HomeHero";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -50,38 +51,29 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         switch (key) {
           case "hero":
             return (
-              <section key={key} className="bg-primary text-primary-fg">
-                <Container className="py-20 sm:py-28">
-                  <div className="max-w-3xl">
-                    <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-accent">
-                      {t("hero.eyebrow")}
-                    </p>
-                    <h1 className="text-4xl font-bold leading-tight sm:text-5xl">{t("hero.title")}</h1>
-                    <p className="mt-5 text-lg text-primary-fg/80">{t("hero.subtitle")}</p>
-                    <div className="mt-8 flex flex-wrap gap-3">
-                      <ButtonLink href="/book-consultation" variant="secondary" size="lg">
-                        {t("hero.cta")}
-                      </ButtonLink>
-                      <ButtonLink href="/services" variant="outline" size="lg" className="border-primary-fg/30 text-primary-fg hover:bg-primary-fg/10">
-                        {t("hero.secondaryCta")}
-                      </ButtonLink>
-                    </div>
-                  </div>
-                </Container>
-              </section>
+              <HomeHero
+                key={key}
+                eyebrow={t("hero.eyebrow")}
+                title={t("hero.title")}
+                subtitle={t("hero.subtitle")}
+                ctaLabel={t("hero.cta")}
+                ctaHref="/book-consultation"
+                secondaryLabel={t("hero.secondaryCta")}
+                secondaryHref="/services"
+              />
             );
 
           case "problems":
             return (
               <Section key={key} surface>
-                <SectionHeading title={t("problems.title")} subtitle={t("problems.subtitle")} />
+                <SectionHeading align="center" label="Challenges" title={t("problems.title")} subtitle={t("problems.subtitle")} />
               </Section>
             );
 
           case "about_summary":
             return (
-              <Section key={key}>
-                <SectionHeading title={t("about.title")} />
+              <Section key={key} className="text-center">
+                <SectionHeading align="center" label="About" index={1} title={t("about.title")} />
                 <ButtonLink href="/about" variant="outline">
                   {common("learnMore")} <Arrow className="h-4 w-4" aria-hidden />
                 </ButtonLink>
@@ -93,7 +85,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             if (list.length === 0) return null;
             return (
               <Section key={key}>
-                <SectionHeading title={t("services.title")} subtitle={t("services.subtitle")} />
+                <SectionHeading align="center" label="Services" index={3} title={t("services.title")} subtitle={t("services.subtitle")} />
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {list.map((s) => (
                     <ServiceCard key={s.id} service={s} />
@@ -108,7 +100,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             if (list.length === 0) return null;
             return (
               <Section key={key} surface>
-                <SectionHeading title={t("featuredPackages.title")} subtitle={t("featuredPackages.subtitle")} />
+                <SectionHeading align="center" label="Packages" index={4} title={t("featuredPackages.title")} subtitle={t("featuredPackages.subtitle")} />
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {list.map((p) => (
                     <PackageCard key={p.id} pkg={p} pricingLabel={tp(p.pricing_type)} />
@@ -123,7 +115,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             if (list.length === 0) return null;
             return (
               <Section key={key}>
-                <SectionHeading title={t("sectors.title")} subtitle={t("sectors.subtitle")} />
+                <SectionHeading align="center" label="Sectors" index={5} title={t("sectors.title")} subtitle={t("sectors.subtitle")} />
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {list.map((s) => (
                     <SectorCard key={s.id} sector={s} />
@@ -136,7 +128,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           case "methodology":
             return (
               <Section key={key} surface>
-                <SectionHeading title={t("methodology.title")} subtitle={t("methodology.subtitle")} />
+                <SectionHeading align="center" label="Methodology" index={2} title={t("methodology.title")} subtitle={t("methodology.subtitle")} />
               </Section>
             );
 
@@ -145,13 +137,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             const stats = ((data?.stats as Stat[]) ?? []) as Stat[];
             return (
               <Section key={key}>
-                <SectionHeading title={t("caseStudies.title")} subtitle={t("caseStudies.subtitle")} />
+                <SectionHeading align="center" label="Clients" index={6} title={t("caseStudies.title")} subtitle={t("caseStudies.subtitle")} />
                 {stats.length > 0 ? (
-                  <div className="mb-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
+                  <div className="mb-12 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-lg)] border border-border bg-border sm:grid-cols-4">
                     {stats.map((s) => (
-                      <div key={s.key}>
-                        <p className="text-3xl font-bold text-primary">{s.value}</p>
-                        <p className="text-sm text-muted">{s.label}</p>
+                      <div key={s.key} className="bg-bg px-6 py-8 text-center">
+                        <p className="display-heading text-4xl text-accent sm:text-5xl">{s.value}</p>
+                        <p className="mt-2 text-sm text-muted">{s.label}</p>
                       </div>
                     ))}
                   </div>
@@ -172,7 +164,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             if (list.length === 0) return null;
             return (
               <Section key={key} surface>
-                <SectionHeading title={t("ecosystem.title")} subtitle={t("ecosystem.subtitle")} />
+                <SectionHeading align="center" label="Ecosystem" index={7} title={t("ecosystem.title")} subtitle={t("ecosystem.subtitle")} />
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {list.map((e) => (
                     <EcosystemCard key={e.id} entity={e} />
@@ -239,8 +231,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
           case "contact":
             return (
-              <Section key={key}>
-                <SectionHeading title={t("contact.title")} subtitle={t("contact.subtitle")} />
+              <Section key={key} className="text-center">
+                <SectionHeading align="center" title={t("contact.title")} subtitle={t("contact.subtitle")} />
                 <ButtonLink href="/contact" variant="outline">
                   {t("contact.title")} <Arrow className="h-4 w-4" aria-hidden />
                 </ButtonLink>

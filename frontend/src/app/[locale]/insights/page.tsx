@@ -37,6 +37,7 @@ export default async function InsightsPage({
   return (
     <>
       <PageHeader
+        label="Insights"
         title={t("articles")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("articles") }]} />}
       >

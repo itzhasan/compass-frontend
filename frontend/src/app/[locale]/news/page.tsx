@@ -45,6 +45,7 @@ export default async function NewsPage({
   return (
     <>
       <PageHeader
+        label="News"
         title={t("news")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("news") }]} />}
       >

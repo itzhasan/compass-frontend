@@ -35,6 +35,7 @@ export default async function BookConsultationPage({
   return (
     <>
       <PageHeader
+        label="Consultation"
         title={t("bookConsultation")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("bookConsultation") }]} />}
       />

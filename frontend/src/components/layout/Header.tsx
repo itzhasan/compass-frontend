@@ -2,10 +2,11 @@
 
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Link, usePathname } from "@/i18n/navigation";
 import { ButtonLink } from "@/components/ui/Button";
+import { CompassMark } from "@/components/ui/CompassMark";
 import { cn } from "@/lib/cn";
 
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -39,11 +40,38 @@ export function Header({ brand }: { brand: string }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Transparent with light text over the dark hero/header band; solid light bar once scrolled.
+  const solid = scrolled || drawerOpen;
+  const navLink = solid ? "text-fg hover:bg-surface" : "text-white/90 hover:bg-white/10";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-40 transition-colors duration-300",
+        solid
+          ? "border-b border-border bg-bg/90 backdrop-blur"
+          : "border-b border-transparent bg-transparent",
+      )}
+    >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="text-lg font-bold text-fg" onClick={() => setDrawerOpen(false)}>
+        <Link
+          href="/"
+          className={cn(
+            "flex items-center gap-2 text-lg font-bold transition-colors",
+            solid ? "text-fg" : "text-white",
+          )}
+          onClick={() => setDrawerOpen(false)}
+        >
+          <CompassMark className="h-7 w-7 text-accent" />
           {brand}
         </Link>
 
@@ -54,7 +82,10 @@ export function Header({ brand }: { brand: string }) {
               <div key={item.key} className="group relative">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-3 py-2 text-sm font-medium text-fg hover:bg-surface"
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-3 py-2 text-sm font-medium transition-colors",
+                    navLink,
+                  )}
                   aria-haspopup="true"
                 >
                   {t(item.key)}
@@ -77,8 +108,9 @@ export function Header({ brand }: { brand: string }) {
                 key={item.key}
                 href={item.href}
                 className={cn(
-                  "rounded-[var(--radius-sm)] px-3 py-2 text-sm font-medium text-fg hover:bg-surface",
-                  pathname === item.href && "text-primary",
+                  "rounded-[var(--radius-sm)] px-3 py-2 text-sm font-medium transition-colors",
+                  navLink,
+                  pathname === item.href && "text-accent",
                 )}
               >
                 {t(item.key)}
@@ -88,8 +120,8 @@ export function Header({ brand }: { brand: string }) {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <LanguageSwitcher />
-          <ButtonLink href="/book-consultation" size="sm">
+          <LanguageSwitcher className={solid ? undefined : "text-white/90 hover:bg-white/10"} />
+          <ButtonLink href="/book-consultation" size="sm" variant="secondary">
             {t("bookConsultation")}
           </ButtonLink>
         </div>
@@ -97,7 +129,7 @@ export function Header({ brand }: { brand: string }) {
         {/* Mobile toggle */}
         <button
           type="button"
-          className="rounded-[var(--radius-sm)] p-2 text-fg hover:bg-surface lg:hidden"
+          className={cn("rounded-[var(--radius-sm)] p-2 transition-colors lg:hidden", navLink)}
           onClick={() => setDrawerOpen((o) => !o)}
           aria-expanded={drawerOpen}
           aria-label={drawerOpen ? t("close") : t("menu")}

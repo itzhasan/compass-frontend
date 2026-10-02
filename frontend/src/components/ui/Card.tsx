@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 
 const cardBase =
-  "group flex flex-col rounded-[var(--radius-lg)] border border-border bg-bg p-6 transition-shadow hover:shadow-lg";
+  "group flex flex-col rounded-[var(--radius-lg)] border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.35)]";
 
 export function Card({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={cn(cardBase, className)}>{children}</div>;

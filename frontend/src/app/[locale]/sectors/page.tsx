@@ -26,6 +26,8 @@ export default async function SectorsPage({ params }: { params: Promise<{ locale
   return (
     <>
       <PageHeader
+        label="Sectors"
+        index={5}
         title={t("sectors")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("sectors") }]} />}
       />

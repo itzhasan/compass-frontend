@@ -23,6 +23,7 @@ export default async function PartnerSponsorshipPage({ params }: { params: Promi
   return (
     <>
       <PageHeader
+        label="Partnership"
         title={t("partner")}
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("partner") }]} />}
       />

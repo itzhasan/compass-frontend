@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
+import { CompassMark } from "@/components/ui/CompassMark";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import type { Settings } from "@/lib/api/types";
@@ -19,20 +20,23 @@ export async function Footer({ brand, settings }: { brand: string; settings: Set
   ] as const;
 
   return (
-    <footer className="mt-auto border-t border-border bg-surface">
+    <footer data-theme="dark" className="mt-auto border-t border-border bg-bg text-fg">
       {/* Thin geometric divider band (subtle brand motif). */}
       <div
         aria-hidden
-        className="h-2 w-full opacity-70"
+        className="h-1 w-full opacity-80"
         style={{
           backgroundImage:
             "repeating-linear-gradient(45deg, var(--color-accent) 0 2px, transparent 2px 10px)",
         }}
       />
-      <Container className="py-14">
+      <Container className="py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-lg font-bold text-fg">{brand}</p>
+            <p className="flex items-center gap-2 text-lg font-bold text-fg">
+              <CompassMark className="h-7 w-7 text-accent" />
+              {brand}
+            </p>
             <p className="mt-3 text-sm text-muted">{t("tagline")}</p>
           </div>
 
