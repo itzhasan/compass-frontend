@@ -58,7 +58,7 @@ export function LandingServices({ services }: { services: LandingContent["servic
                     isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
                   )}
                 >
-                  <ul className="min-h-0 space-y-3 px-6 pb-6 ps-6 sm:ps-20">
+                  <ul className="min-h-0 space-y-3 px-6 pb-6 ps-20">
                     {item.points.map((pt) => (
                       <li key={pt} className="flex items-start gap-2 text-sm text-muted">
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />

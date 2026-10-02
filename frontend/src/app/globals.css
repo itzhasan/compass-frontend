@@ -161,23 +161,6 @@ body {
   animation: compass-spin 160s linear infinite reverse;
 }
 
-/* Hero compass-logo motif. A radial mask fades the logo's square frame and long
-   diagonal rays into the dark band so only the compass core reads. On phones the
-   mask is tighter and the opacity lower, so the rays don't smear across the hero
-   as visible streaks behind the headline. */
-.hero-compass {
-  opacity: 0.1;
-  -webkit-mask-image: radial-gradient(circle, #000 32%, transparent 56%);
-  mask-image: radial-gradient(circle, #000 32%, transparent 56%);
-}
-@media (min-width: 640px) {
-  .hero-compass {
-    opacity: 0.16;
-    -webkit-mask-image: radial-gradient(circle, #000 52%, transparent 70%);
-    mask-image: radial-gradient(circle, #000 52%, transparent 70%);
-  }
-}
-
 /* Landing (Al-Bawsala replica) — cool periwinkle gradient for the hero headline
    first line and the large stat figures. */
 .text-gradient-cool {
