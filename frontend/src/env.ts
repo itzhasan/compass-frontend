@@ -22,4 +22,5 @@ if (!parsed.success) {
   throw new Error("Invalid environment variables");
 }
 
+
 export const env = parsed.data;
