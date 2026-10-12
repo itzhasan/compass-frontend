@@ -89,6 +89,8 @@ html {
   background: var(--color-bg);
   color: var(--color-fg);
   scroll-behavior: smooth;
+  /* Keep in-page anchors clear of the sticky header. */
+  scroll-padding-top: 5rem;
 }
 
 /* Arabic gets its own font + slightly looser line-height for readability. */

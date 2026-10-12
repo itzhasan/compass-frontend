@@ -5,15 +5,20 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { useRouter } from "@/i18n/navigation";
+import { cn } from "@/lib/cn";
 
 /** Accessible search form that navigates to `pathname?q=…` (works with JS; degrades to a
  * normal submit). */
 export function SearchBox({
   pathname,
   defaultValue = "",
+  placeholder,
+  className,
 }: {
   pathname: "/insights" | "/search";
   defaultValue?: string;
+  placeholder?: string;
+  className?: string;
 }) {
   const t = useTranslations("common");
   const router = useRouter();
@@ -26,7 +31,7 @@ export function SearchBox({
         e.preventDefault();
         router.push({ pathname, query: value ? { q: value } : {} });
       }}
-      className="flex w-full max-w-md items-center gap-2"
+      className={cn("flex w-full max-w-md items-center gap-2", className)}
     >
       <div className="relative flex-1">
         <Search className="pointer-events-none absolute top-1/2 h-4 w-4 -translate-y-1/2 text-muted start-3" aria-hidden />
@@ -35,7 +40,7 @@ export function SearchBox({
           name="q"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder={t("searchPlaceholder")}
+          placeholder={placeholder ?? t("searchPlaceholder")}
           aria-label={t("search")}
           className="h-11 w-full rounded-[var(--radius)] border border-border bg-bg ps-10 pe-3 text-sm outline-none focus:border-primary"
         />

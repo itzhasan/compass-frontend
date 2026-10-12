@@ -29,7 +29,7 @@ export function LandingHero({ hero }: { hero: LandingContent["hero"] }) {
         />
       </div>
 
-      <Container className="relative flex min-h-[94vh] flex-col items-center justify-center py-28 text-center">
+      <Container className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center py-20 text-center">
         <p className="reveal section-label rounded-full border border-[var(--color-ink-border)] px-4 py-1.5 text-[var(--color-ink-muted)]">
           {hero.badge}
         </p>

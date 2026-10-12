@@ -1,9 +1,9 @@
 "use client";
 
-import { ChevronDown, Menu, X } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { ArrowLeft, ArrowRight, Menu, X } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Link, usePathname } from "@/i18n/navigation";
 import { ButtonLink } from "@/components/ui/Button";
@@ -13,14 +13,18 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 
 interface NavItem {
   key: string;
+  /** Shorter label for the desktop bar, when the full one is too long. */
+  shortKey?: string;
   href: string;
+  /** Drawer-only items are hidden from the desktop bar. */
+  drawerOnly?: boolean;
   children?: { key: string; href: string }[];
 }
 
 const NAV: NavItem[] = [
   { key: "about", href: "/about" },
   { key: "services", href: "/services" },
-  { key: "packages", href: "/packages" },
+  { key: "packages", shortKey: "packagesShort", href: "/packages" },
   { key: "sectors", href: "/sectors" },
   {
     key: "insights",
@@ -31,72 +35,53 @@ const NAV: NavItem[] = [
       { key: "caseStudies", href: "/case-studies" },
     ],
   },
-  { key: "ecosystem", href: "/ecosystem" },
-  { key: "partner", href: "/partner-sponsorship" },
+  { key: "ecosystem", shortKey: "ecosystemShort", href: "/ecosystem" },
+  { key: "partner", href: "/partner-sponsorship", drawerOnly: true },
   { key: "contact", href: "/contact" },
 ];
 
+const isActive = (pathname: string, item: NavItem) =>
+  pathname === item.href ||
+  pathname.startsWith(`${item.href}/`) ||
+  (item.children?.some((c) => pathname === c.href || pathname.startsWith(`${c.href}/`)) ?? false);
+
 export function Header({ brand }: { brand: string }) {
   const t = useTranslations("nav");
+  const locale = useLocale();
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const Arrow = locale === "ar" ? ArrowLeft : ArrowRight;
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Transparent with light text over the dark hero/header band; solid light bar once scrolled.
-  const solid = scrolled || drawerOpen;
-  const navLink = solid ? "text-fg hover:bg-surface" : "text-white/90 hover:bg-white/10";
+  const navLink = "rounded-[var(--radius-sm)] px-2.5 py-2 text-[0.8125rem] font-bold text-fg transition-colors hover:text-accent";
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-colors duration-300",
-        solid
-          ? "border-b border-border bg-bg/90 backdrop-blur"
-          : "border-b border-transparent bg-transparent",
-      )}
-    >
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-bg/95 backdrop-blur">
+      <div className="flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
         <Link
           href="/"
-          className={cn(
-            "flex items-center gap-2 text-lg font-bold transition-colors",
-            solid ? "text-fg" : "text-white",
-          )}
+          className="flex items-center gap-2.5 text-xl font-extrabold text-fg"
           onClick={() => setDrawerOpen(false)}
         >
-          <Image src="/logo.jpeg" alt="" width={28} height={28} className="h-7 w-7 rounded-[var(--radius-sm)]" priority />
+          <Image src="/logo.jpeg" alt="" width={32} height={32} className="h-8 w-8 rounded-[var(--radius-sm)]" priority />
           {brand}
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-          {NAV.map((item) =>
-            item.children ? (
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
+          {NAV.filter((item) => !item.drawerOnly).map((item) => {
+            const label = t(item.shortKey ?? item.key);
+            const active = isActive(pathname, item);
+            return item.children ? (
               <div key={item.key} className="group relative">
-                <button
-                  type="button"
-                  className={cn(
-                    "inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-3 py-2 text-sm font-medium transition-colors",
-                    navLink,
-                  )}
-                  aria-haspopup="true"
-                >
-                  {t(item.key)}
-                  <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" aria-hidden />
-                </button>
-                <div className="invisible absolute start-0 top-full min-w-48 rounded-[var(--radius)] border border-border bg-bg p-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <Link href={item.href} className={cn(navLink, "inline-block", active && "text-accent")} aria-haspopup="true">
+                  {label}
+                </Link>
+                <div className="invisible absolute start-0 top-full min-w-52 rounded-[var(--radius)] border border-border bg-bg p-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                   {item.children.map((child) => (
                     <Link
                       key={child.key}
                       href={child.href}
-                      className="block rounded-[var(--radius-sm)] px-3 py-2 text-sm text-fg hover:bg-surface"
+                      className="block rounded-[var(--radius-sm)] px-3 py-2 text-sm text-fg hover:bg-surface hover:text-accent"
                     >
                       {t(child.key)}
                     </Link>
@@ -104,32 +89,25 @@ export function Header({ brand }: { brand: string }) {
                 </div>
               </div>
             ) : (
-              <Link
-                key={item.key}
-                href={item.href}
-                className={cn(
-                  "rounded-[var(--radius-sm)] px-3 py-2 text-sm font-medium transition-colors",
-                  navLink,
-                  pathname === item.href && "text-accent",
-                )}
-              >
-                {t(item.key)}
+              <Link key={item.key} href={item.href} className={cn(navLink, active && "text-accent")}>
+                {label}
               </Link>
-            ),
-          )}
+            );
+          })}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
-          <LanguageSwitcher className={solid ? undefined : "text-white/90 hover:bg-white/10"} />
-          <ButtonLink href="/book-consultation" size="sm" variant="secondary">
+        <div className="hidden items-center gap-3 lg:flex">
+          <LanguageSwitcher short />
+          <ButtonLink href="/book-consultation" variant="secondary" size="sm" className="px-5">
             {t("bookConsultation")}
+            <Arrow className="h-4 w-4" aria-hidden />
           </ButtonLink>
         </div>
 
         {/* Mobile toggle */}
         <button
           type="button"
-          className={cn("rounded-[var(--radius-sm)] p-2 transition-colors lg:hidden", navLink)}
+          className="rounded-[var(--radius-sm)] p-2 text-fg transition-colors hover:bg-surface lg:hidden"
           onClick={() => setDrawerOpen((o) => !o)}
           aria-expanded={drawerOpen}
           aria-label={drawerOpen ? t("close") : t("menu")}
@@ -141,12 +119,15 @@ export function Header({ brand }: { brand: string }) {
       {/* Mobile drawer */}
       {drawerOpen ? (
         <div className="border-t border-border bg-bg lg:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4" aria-label="Mobile">
+          <nav className="mx-auto flex max-h-[calc(100dvh-4rem)] max-w-6xl flex-col gap-1 overflow-y-auto px-4 py-4" aria-label="Mobile">
             {NAV.map((item) => (
               <div key={item.key}>
                 <Link
                   href={item.href}
-                  className="block rounded-[var(--radius-sm)] px-3 py-2 font-medium text-fg hover:bg-surface"
+                  className={cn(
+                    "block rounded-[var(--radius-sm)] px-3 py-2 font-bold text-fg hover:bg-surface",
+                    isActive(pathname, item) && "text-accent",
+                  )}
                   onClick={() => setDrawerOpen(false)}
                 >
                   {t(item.key)}
@@ -169,8 +150,9 @@ export function Header({ brand }: { brand: string }) {
             ))}
             <div className="mt-3 flex items-center justify-between">
               <LanguageSwitcher />
-              <ButtonLink href="/book-consultation" size="sm" onClick={() => setDrawerOpen(false)}>
+              <ButtonLink href="/book-consultation" variant="secondary" size="sm" onClick={() => setDrawerOpen(false)}>
                 {t("bookConsultation")}
+                <Arrow className="h-4 w-4" aria-hidden />
               </ButtonLink>
             </div>
           </nav>

@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,9 +17,17 @@ const HONEYPOT = "website_url";
 export function DynamicForm({
   schema,
   presets,
+  placeholders,
+  submitLabel,
+  footnote,
 }: {
   schema: FormSchema;
   presets?: Record<string, string>;
+  /** Placeholder text keyed by field key. */
+  placeholders?: Record<string, string>;
+  submitLabel?: string;
+  /** Small print shown above the submit button. */
+  footnote?: string;
 }) {
   const t = useTranslations("forms");
   const locale = useLocale() as Locale;
@@ -101,10 +109,18 @@ export function DynamicForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5" aria-live="polite">
-      {schema.fields.map((field) => (
-        <Field key={field.key} field={field} register={register} error={errors[field.key]?.message as string | undefined} />
-      ))}
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6" aria-live="polite">
+      <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2">
+        {schema.fields.map((field) => (
+          <Field
+            key={field.key}
+            field={field}
+            register={register}
+            placeholder={placeholders?.[field.key]}
+            error={errors[field.key]?.message as string | undefined}
+          />
+        ))}
+      </div>
 
       {/* Honeypot — visually hidden, must stay empty. */}
       <div aria-hidden className="absolute -left-[9999px]" tabIndex={-1}>
@@ -128,8 +144,15 @@ export function DynamicForm({
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" disabled={isSubmitting}>
-        {isSubmitting ? t("submitting") : t("submit")}
+      {footnote ? <p className="text-xs text-muted">{footnote}</p> : null}
+
+      <Button type="submit" variant="secondary" size="lg" disabled={isSubmitting}>
+        {isSubmitting ? t("submitting") : (submitLabel ?? t("submit"))}
+        {isSubmitting ? null : locale === "ar" ? (
+          <ArrowLeft className="h-4 w-4" aria-hidden />
+        ) : (
+          <ArrowRight className="h-4 w-4" aria-hidden />
+        )}
       </Button>
     </form>
   );
@@ -140,34 +163,36 @@ type Register = ReturnType<typeof useForm<Record<string, unknown>>>["register"];
 function Field({
   field,
   register,
+  placeholder,
   error,
 }: {
   field: FormField;
   register: Register;
+  placeholder?: string;
   error?: string;
 }) {
   const t = useTranslations("forms");
   const id = `f_${field.key}`;
   const required = field.is_required ? { required: t("required") } : {};
   const labelEl = (
-    <label htmlFor={id} className="mb-1 block text-sm font-medium text-fg">
+    <label htmlFor={id} className="mb-2 block text-sm font-bold text-fg">
       {field.label}
-      {field.is_required ? <span className="text-red-600"> *</span> : null}
+      {field.is_required ? <span> *</span> : null}
     </label>
   );
   const inputClass = cn(
-    "w-full rounded-[var(--radius)] border bg-bg px-3 py-2.5 text-sm outline-none focus:border-primary",
+    "w-full rounded-[var(--radius)] border bg-surface px-4 py-3.5 text-sm text-fg outline-none transition-colors placeholder:text-muted/80 focus:border-accent focus:bg-bg",
     error ? "border-red-500" : "border-border",
   );
 
   const control = (() => {
     switch (field.type) {
       case "textarea":
-        return <textarea id={id} rows={5} className={inputClass} {...register(field.key, required)} />;
+        return <textarea id={id} rows={5} placeholder={placeholder} className={inputClass} {...register(field.key, required)} />;
       case "select":
         return (
           <select id={id} className={inputClass} {...register(field.key, required)}>
-            <option value="">—</option>
+            <option value="">{placeholder ?? "—"}</option>
             {field.options.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -202,7 +227,9 @@ function Field({
           <input
             type="email"
             id={id}
-            className={inputClass}
+            dir="ltr"
+            placeholder={placeholder}
+            className={cn(inputClass, "rtl:text-right")}
             {...register(field.key, { ...required, pattern: { value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/, message: t("invalidEmail") } })}
           />
         );
@@ -211,15 +238,19 @@ function Field({
           <input
             type={field.type === "phone" ? "tel" : "text"}
             id={id}
-            className={inputClass}
+            dir={field.type === "phone" ? "ltr" : undefined}
+            placeholder={placeholder}
+            className={cn(inputClass, field.type === "phone" && "rtl:text-right")}
             {...register(field.key, required)}
           />
         );
     }
   })();
 
+  const wide = ["textarea", "select", "multiselect", "checkbox", "file"].includes(field.type);
+
   return (
-    <div>
+    <div className={cn(wide && "sm:col-span-2")}>
       {field.type !== "checkbox" ? labelEl : null}
       {control}
       {field.help && field.type !== "checkbox" ? (

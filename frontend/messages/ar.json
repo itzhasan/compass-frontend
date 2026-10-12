@@ -20,7 +20,9 @@
     "menu": "القائمة",
     "close": "إغلاق",
     "switchToArabic": "العربية",
-    "switchToEnglish": "English"
+    "switchToEnglish": "English",
+    "packagesShort": "الباقات",
+    "ecosystemShort": "المنظومة"
   },
   "common": {
     "readMore": "اقرأ المزيد",
@@ -79,7 +81,7 @@
     "contact": { "title": "تواصل معنا", "subtitle": "يسعدنا أن نسمع عن مشروعك." }
   },
   "footer": {
-    "tagline": "بوصلة واضحة لتطوير الأعمال في العراق.",
+    "tagline": "اتجاه واضح. أثر مستدام.\nاستشارات أعمال تجمع المعرفة بالسوق العراقي ودعم التنفيذ.",
     "quickLinks": "روابط سريعة",
     "legal": "قانوني",
     "privacy": "سياسة الخصوصية",
@@ -88,7 +90,20 @@
     "newsletter": "النشرة البريدية",
     "newsletterHint": "التحديثات قريباً.",
     "rights": "جميع الحقوق محفوظة.",
-    "placeholderNotice": "يستخدم هذا الموقع محتوى مبدئياً بانتظار اعتماد العميل."
+    "placeholderNotice": "يستخدم هذا الموقع محتوى مبدئياً بانتظار اعتماد العميل.",
+    "explore": "استكشف البوصلة",
+    "knowledge": "المعرفة",
+    "contactUs": "تواصل معنا",
+    "location": "بغداد، العراق",
+    "links": {
+      "services": "خدماتنا",
+      "packages": "الباقات والأسعار",
+      "sectors": "القطاعات",
+      "ecosystem": "منظومة البوصلة",
+      "articles": "المقالات والدراسات",
+      "news": "الأخبار والإعلانات",
+      "caseStudies": "دراسات الحالة"
+    }
   },
   "packages": {
     "pricing": {

@@ -31,7 +31,7 @@ export function PageHeader({
   return (
     <div className="ink-glow relative overflow-hidden">
       <CompassMark className="pointer-events-none absolute -top-24 start-1/2 h-[42rem] w-[42rem] -translate-x-1/2 text-white/[0.04] rtl:translate-x-1/2" />
-      <Container className="relative pb-16 pt-28 sm:pb-24 sm:pt-36">
+      <Container className="relative py-14 sm:py-20">
         {breadcrumbs}
         {marker ? <p className="section-label mb-4 mt-3">{marker}</p> : null}
         <h1 className="display-heading text-4xl text-[var(--color-ink-fg)] sm:text-5xl">{title}</h1>

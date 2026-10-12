@@ -20,7 +20,9 @@
     "menu": "Menu",
     "close": "Close",
     "switchToArabic": "العربية",
-    "switchToEnglish": "English"
+    "switchToEnglish": "English",
+    "packagesShort": "Packages",
+    "ecosystemShort": "Ecosystem"
   },
   "common": {
     "readMore": "Read more",
@@ -79,7 +81,7 @@
     "contact": { "title": "Get in touch", "subtitle": "We’d love to hear about your project." }
   },
   "footer": {
-    "tagline": "A clear compass for business development in Iraq.",
+    "tagline": "A clear direction. A lasting impact.\nBusiness consulting that combines knowledge of the Iraqi market with support through execution.",
     "quickLinks": "Quick links",
     "legal": "Legal",
     "privacy": "Privacy Policy",
@@ -88,7 +90,20 @@
     "newsletter": "Newsletter",
     "newsletterHint": "Updates coming soon.",
     "rights": "All rights reserved.",
-    "placeholderNotice": "This site uses placeholder content pending client approval."
+    "placeholderNotice": "This site uses placeholder content pending client approval.",
+    "explore": "Explore Compass",
+    "knowledge": "Knowledge",
+    "contactUs": "Contact us",
+    "location": "Baghdad, Iraq",
+    "links": {
+      "services": "Our services",
+      "packages": "Packages & pricing",
+      "sectors": "Sectors",
+      "ecosystem": "Compass ecosystem",
+      "articles": "Articles & studies",
+      "news": "News & announcements",
+      "caseStudies": "Case studies"
+    }
   },
   "packages": {
     "pricing": {

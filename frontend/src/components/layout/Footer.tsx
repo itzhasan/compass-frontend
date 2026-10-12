@@ -1,101 +1,89 @@
 import { getTranslations } from "next-intl/server";
 
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import type { Settings } from "@/lib/api/types";
 
-/** Site footer: quick links, legal, contact, socials, newsletter slot + placeholder notice. */
+const EXPLORE = [
+  { key: "services", href: "/services" },
+  { key: "packages", href: "/packages" },
+  { key: "sectors", href: "/sectors" },
+  { key: "ecosystem", href: "/ecosystem" },
+] as const;
+
+const KNOWLEDGE = [
+  { key: "articles", href: "/insights" },
+  { key: "news", href: "/news" },
+  { key: "caseStudies", href: "/case-studies" },
+] as const;
+
+const linkClass = "text-white/60 transition-colors hover:text-accent";
+
+/** Site footer: brand + tagline, two link columns, contact details and a legal row. */
 export async function Footer({ brand, settings }: { brand: string; settings: Settings }) {
   const t = await getTranslations("footer");
-  const nav = await getTranslations("nav");
   const year = new Date().getFullYear();
-
-  const quickLinks = [
-    { key: "services", href: "/services" },
-    { key: "packages", href: "/packages" },
-    { key: "sectors", href: "/sectors" },
-    { key: "insights", href: "/insights" },
-    { key: "ecosystem", href: "/ecosystem" },
-  ] as const;
+  const location = settings.contact.address || t("location");
 
   return (
-    <footer data-theme="dark" className="mt-auto border-t border-border bg-bg text-fg">
-      {/* Thin geometric divider band (subtle brand motif). */}
-      <div
-        aria-hidden
-        className="h-1 w-full opacity-80"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(45deg, var(--color-accent) 0 2px, transparent 2px 10px)",
-        }}
-      />
-      <Container className="py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="mt-auto bg-[#0b1422] text-white">
+      <Container className="pb-12 pt-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr] lg:gap-16">
           <div>
-            <p className="flex items-center gap-2 text-lg font-bold text-fg">
-              <Image src="/logo.jpeg" alt="" width={28} height={28} className="h-7 w-7 rounded-[var(--radius-sm)]" />
-              {brand}
-            </p>
-            <p className="mt-3 text-sm text-muted">{t("tagline")}</p>
+            <p className="display-heading text-3xl">{brand}</p>
+            <p className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/60">{t("tagline")}</p>
           </div>
 
-          <nav aria-label={t("quickLinks")}>
-            <h2 className="mb-3 text-sm font-semibold text-fg">{t("quickLinks")}</h2>
-            <ul className="space-y-2 text-sm text-muted">
-              {quickLinks.map((l) => (
+          <nav aria-label={t("explore")}>
+            <h2 className="mb-4 font-bold">{t("explore")}</h2>
+            <ul className="space-y-1.5 text-sm">
+              {EXPLORE.map((l) => (
                 <li key={l.key}>
-                  <Link href={l.href} className="hover:text-fg">
-                    {nav(l.key)}
+                  <Link href={l.href} className={linkClass}>
+                    {t(`links.${l.key}`)}
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <nav aria-label={t("legal")}>
-            <h2 className="mb-3 text-sm font-semibold text-fg">{t("legal")}</h2>
-            <ul className="space-y-2 text-sm text-muted">
-              <li>
-                <Link href="/privacy" className="hover:text-fg">
-                  {t("privacy")}
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-fg">
-                  {t("terms")}
-                </Link>
-              </li>
+          <nav aria-label={t("knowledge")}>
+            <h2 className="mb-4 font-bold">{t("knowledge")}</h2>
+            <ul className="space-y-2.5 text-sm">
+              {KNOWLEDGE.map((l) => (
+                <li key={l.key}>
+                  <Link href={l.href} className={linkClass}>
+                    {t(`links.${l.key}`)}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
 
           <div>
-            <h2 className="mb-3 text-sm font-semibold text-fg">{t("contact")}</h2>
-            <ul className="space-y-2 text-sm text-muted">
+            <h2 className="mb-4 font-bold">{t("contactUs")}</h2>
+            <ul className="space-y-1.5 text-sm">
               {settings.contact.email ? (
                 <li>
-                  <a href={`mailto:${settings.contact.email}`} className="hover:text-fg">
+                  <a href={`mailto:${settings.contact.email}`} className={linkClass}>
                     {settings.contact.email}
                   </a>
                 </li>
               ) : null}
               {settings.contact.phones.map((p) => (
-                <li key={p.number} dir="ltr">
-                  <a href={`tel:${p.number.replace(/\s/g, "")}`} className="hover:text-fg">
+                <li key={p.number}>
+                  <a href={`tel:${p.number.replace(/\s/g, "")}`} dir="ltr" className={linkClass}>
                     {p.number}
                   </a>
                 </li>
               ))}
+              <li className="text-white/60">{location}</li>
             </ul>
             {settings.socials.length > 0 ? (
               <ul className="mt-4 flex flex-wrap gap-3 text-sm">
                 {settings.socials.map((s) => (
                   <li key={s.platform}>
-                    <a
-                      href={s.url}
-                      rel="noopener noreferrer"
-                      className="capitalize text-muted hover:text-fg"
-                    >
+                    <a href={s.url} rel="noopener noreferrer" className={`capitalize ${linkClass}`}>
                       {s.platform}
                     </a>
                   </li>
@@ -105,11 +93,19 @@ export async function Footer({ brand, settings }: { brand: string; settings: Set
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-20 flex flex-col gap-3 text-xs text-white/50 sm:flex-row sm:items-center sm:gap-16">
           <p>
-            © {year} {brand}. {t("rights")}
+            © {year} {brand} · {location}
           </p>
-          <p className="opacity-80">{t("placeholderNotice")}</p>
+          <p className="flex items-center gap-2">
+            <Link href="/privacy" className="hover:text-accent">
+              {t("privacy")}
+            </Link>
+            <span aria-hidden>·</span>
+            <Link href="/terms" className="hover:text-accent">
+              {t("terms")}
+            </Link>
+          </p>
         </div>
       </Container>
     </footer>
