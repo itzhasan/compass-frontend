@@ -9,6 +9,7 @@ import { cn } from "@/lib/cn";
 
 /** Accessible search form that navigates to `pathname?q=…` (works with JS; degrades to a
  * normal submit). */
+
 export function SearchBox({
   pathname,
   defaultValue = "",
