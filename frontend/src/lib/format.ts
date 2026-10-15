@@ -10,3 +10,11 @@ export function formatDate(iso: string | null, locale: Locale): string {
     day: "numeric",
   }).format(new Date(iso));
 }
+
+/** "1500.00" + "USD" → "1,500 USD" (Western digits; trailing .00 dropped). */
+export function formatPrice(price: string | null, currency: string | null): string {
+  if (!price) return "";
+  const n = Number(price);
+  const amount = Number.isFinite(n) ? new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(n) : price;
+  return [amount, currency].filter(Boolean).join(" ");
+}
