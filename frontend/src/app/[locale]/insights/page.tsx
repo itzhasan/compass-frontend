@@ -165,7 +165,7 @@ export default async function InsightsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ q?: string; type?: string; page?: string; topic?: string }>;
+  searchParams: Promise<{ q?: string; type?: string; page?: string; topic?: string; tag?: string }>;
 }) {
   const { locale } = await params;
   const sp = await searchParams;
@@ -175,14 +175,17 @@ export default async function InsightsPage({
   const rtl = loc === "ar";
   const topic = isTopic(sp.topic) ? sp.topic : undefined;
   const q = (sp.q ?? "").trim();
+  // Article tags (linked from article pages) filter the CMS articles only.
+  const tag = sp.tag?.trim() || undefined;
+  const td = await getTranslations("detail");
 
   // The curated reads are static, so keep the page up even if the articles API is down.
   const res = await api
-    .articles(loc, { q: sp.q, type: sp.type, page: sp.page })
+    .articles(loc, { q: sp.q, type: sp.type, page: sp.page, tag })
     .catch(() => ({ data: [], meta: { current_page: 1, last_page: 1 } }));
 
-  const showFeatured = matches(c.featured, topic, q);
-  const reads = c.reads.filter((r) => matches(r, topic, q));
+  const showFeatured = !tag && matches(c.featured, topic, q);
+  const reads = tag ? [] : c.reads.filter((r) => matches(r, topic, q));
 
   return (
     <>
@@ -283,7 +286,15 @@ export default async function InsightsPage({
       {!topic && res.data.length > 0 ? (
         <section className="py-16 sm:py-24">
           <Container>
-            <EditorialHeading eyebrow={c.articles.eyebrow} title={c.articles.title} />
+            <EditorialHeading
+              eyebrow={c.articles.eyebrow}
+              title={tag ? td("tagFilter", { tag }) : c.articles.title}
+            />
+            {tag ? (
+              <Link href="/insights" className="-mt-6 mb-8 inline-block text-sm font-bold text-accent-hover hover:underline">
+                {td("clearFilter")}
+              </Link>
+            ) : null}
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {res.data.map((a) => (
                 <Link
@@ -310,7 +321,7 @@ export default async function InsightsPage({
               pathname="/insights"
               currentPage={res.meta.current_page}
               lastPage={res.meta.last_page}
-              query={{ q: sp.q, type: sp.type }}
+              query={{ q: sp.q, type: sp.type, tag }}
             />
           </Container>
         </section>

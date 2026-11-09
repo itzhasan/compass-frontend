@@ -156,5 +156,61 @@
     "message": "We use cookies for analytics to improve the site. You can accept or decline.",
     "accept": "Accept",
     "decline": "Decline"
+  },
+  "detail": {
+    "labels": {
+      "news": "NEWS / 07",
+      "article": "INSIGHTS / 06",
+      "service": "SERVICE / 02",
+      "sector": "SECTOR / 04",
+      "package": "PACKAGE / 03",
+      "caseStudy": "CASE STUDY / 08",
+      "ecosystem": "ECOSYSTEM / 05"
+    },
+    "backTo": "Back to {list}",
+    "moreNews": "More news",
+    "attachments": "Attachments",
+    "expiresOn": "Expires on {date}",
+    "sources": "Sources & references",
+    "gallery": "Gallery",
+    "openImage": "Open image {n}",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "howWeWork": "How we work",
+    "sectorsServed": "Sectors we serve with this service",
+    "relatedPackages": "Packages for this service",
+    "relatedServices": "Services we offer this sector",
+    "relatedArticles": "Related articles",
+    "keyFacts": "Key facts",
+    "price": "Price",
+    "service": "Service",
+    "published": "Published",
+    "readingTime": "Reading time",
+    "preparedBy": "Prepared by",
+    "tags": "Tags",
+    "readArticle": "Read the article",
+    "readNews": "Read more",
+    "viewService": "Explore the service",
+    "viewCase": "Read the case",
+    "viewPackage": "Package details",
+    "tagFilter": "Articles tagged #{tag}",
+    "clearFilter": "Clear filter"
+  },
+  "caseStudies": {
+    "challenge": "Challenge",
+    "approach": "Approach",
+    "results": "Results",
+    "metrics": "Key figures",
+    "sector": "Sector",
+    "client": "Client"
+  },
+  "ecosystem": {
+    "about": "About",
+    "relationship": "Our relationship",
+    "field": "Field of work",
+    "classification": "Classification",
+    "website": "Visit website",
+    "links": "Links"
   }
 }

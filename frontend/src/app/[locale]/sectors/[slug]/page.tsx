@@ -1,15 +1,20 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
-import { ArticleCard, CaseStudyCard } from "@/components/cards/ContentCards";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { BackLink, DetailSections, RelatedGrid } from "@/components/detail/DetailBlocks";
+import { DetailHero } from "@/components/detail/DetailHero";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { RichText } from "@/components/ui/RichText";
+import { CtaBand, ctaCopy, ForwardArrow } from "@/components/ui/Editorial";
 import { api } from "@/lib/api/client";
 import type { Locale } from "@/lib/api/types";
+import { formatDate } from "@/lib/format";
 import { buildMetadata } from "@/lib/seo";
+import { listers, slugParams } from "@/lib/static-params";
+
+// Prebuild known slugs; new CMS items still render on demand.
+export const generateStaticParams = slugParams(listers.sectors);
+export const dynamicParams = true;
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -17,79 +22,109 @@ export async function generateMetadata({ params }: Props) {
   const { locale, slug } = await params;
   const sector = await api.sector(locale as Locale, slug);
   if (!sector) return {};
-  return buildMetadata(sector.seo, sector.alternates, locale as Locale);
-}
-
-function Block({ title, html }: { title: string; html: string | null }) {
-  if (!html) return null;
-  return (
-    <section className="border-t border-border py-8 first:border-t-0">
-      <h2 className="mb-3 text-xl font-bold text-fg">{title}</h2>
-      <RichText html={html} />
-    </section>
-  );
+  return buildMetadata(sector.seo, sector.alternates, locale as Locale, {
+    text: sector.definition,
+    image: sector.cover,
+  });
 }
 
 export default async function SectorDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const loc = locale as Locale;
+  const rtl = loc === "ar";
 
-  const [sector, t, ts] = await Promise.all([
-    api.sector(loc, slug),
+  const sector = await api.sector(loc, slug);
+  if (!sector) notFound();
+
+  const [t, ts, td, tc] = await Promise.all([
     getTranslations("nav"),
     getTranslations("sectors"),
+    getTranslations("detail"),
+    getTranslations("caseStudies"),
   ]);
-  if (!sector) notFound();
 
   return (
     <>
-      <PageHeader
+      <DetailHero
+        loc={loc}
+        path={`/sectors/${sector.slug}`}
+        crumbs={[
+          { label: t("home"), href: "/" },
+          { label: t("sectors"), href: "/sectors" },
+        ]}
+        label={td("labels.sector")}
         title={sector.name}
-        breadcrumbs={
-          <Breadcrumbs
-            items={[
-              { label: t("home"), href: "/" },
-              { label: t("sectors"), href: "/sectors" },
-              { label: sector.name },
+      >
+        <ButtonLink
+          href={{ pathname: "/book-consultation", query: { sector: sector.slug } }}
+          variant="secondary"
+          size="lg"
+        >
+          {ts("requestConsultation")}
+          <ForwardArrow rtl={rtl} />
+        </ButtonLink>
+      </DetailHero>
+
+      <section className="py-14 sm:py-16">
+        <Container className="max-w-3xl">
+          <DetailSections
+            sections={[
+              { title: ts("definition"), html: sector.definition },
+              { title: ts("currentState"), html: sector.current_state },
+              { title: ts("challenges"), html: sector.key_challenges },
+              { title: ts("servicesOffered"), html: sector.services_offered },
+              { title: ts("sampleProjects"), html: sector.sample_projects },
             ]}
           />
-        }
-      >
-        <ButtonLink href={{ pathname: "/book-consultation", query: { sector: sector.slug } }}>
-          {ts("requestConsultation")}
-        </ButtonLink>
-      </PageHeader>
+          <div className="mt-12">
+            <BackLink href="/sectors" label={td("backTo", { list: t("sectors") })} rtl={rtl} />
+          </div>
+        </Container>
+      </section>
 
-      <Container className="py-6">
-        <Block title={ts("definition")} html={sector.definition} />
-        <Block title={ts("currentState")} html={sector.current_state} />
-        <Block title={ts("challenges")} html={sector.key_challenges} />
-        <Block title={ts("servicesOffered")} html={sector.services_offered} />
-        <Block title={ts("sampleProjects")} html={sector.sample_projects} />
+      <RelatedGrid
+        title={td("relatedServices")}
+        items={(sector.services ?? []).map((s) => ({
+          href: `/services/${s.slug}`,
+          title: s.title,
+          category: t("services"),
+          body: s.summary,
+        }))}
+        cta={td("viewService")}
+        rtl={rtl}
+        variant="card"
+        surface
+      />
 
-        {sector.case_studies && sector.case_studies.length > 0 ? (
-          <section className="border-t border-border py-8">
-            <h2 className="mb-6 text-xl font-bold text-fg">{ts("relatedCaseStudies")}</h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {sector.case_studies.map((c) => (
-                <CaseStudyCard key={c.id} caseStudy={c} />
-              ))}
-            </div>
-          </section>
-        ) : null}
+      <RelatedGrid
+        title={ts("relatedCaseStudies")}
+        items={(sector.case_studies ?? []).map((c) => ({
+          href: `/case-studies/${c.slug}`,
+          title: c.title,
+          category: tc("client"),
+          meta: c.client_name,
+          cover: c.cover,
+        }))}
+        cta={td("viewCase")}
+        rtl={rtl}
+      />
 
-        {sector.articles && sector.articles.length > 0 ? (
-          <section className="border-t border-border py-8">
-            <h2 className="mb-6 text-xl font-bold text-fg">{ts("relatedArticles")}</h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {sector.articles.map((a) => (
-                <ArticleCard key={a.id} article={a} locale={loc} />
-              ))}
-            </div>
-          </section>
-        ) : null}
-      </Container>
+      <RelatedGrid
+        title={ts("relatedArticles")}
+        items={(sector.articles ?? []).map((a) => ({
+          href: `/insights/${a.slug}`,
+          title: a.title,
+          category: a.type_label,
+          meta: formatDate(a.published_at, loc),
+          cover: a.cover,
+        }))}
+        cta={td("readArticle")}
+        rtl={rtl}
+        surface={(sector.case_studies ?? []).length > 0}
+      />
+
+      <CtaBand rtl={rtl} {...ctaCopy[loc]} />
     </>
   );
 }

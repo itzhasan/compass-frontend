@@ -14,8 +14,9 @@ export function LandingHero({ hero }: { hero: LandingContent["hero"] }) {
     <section id="top" className="ink-glow relative isolate overflow-hidden">
       {/* Rotating compass-logo motif. Centering lives on the wrapper so the spin
           (a rotate keyframe) never fights the translate; a radial mask fades the
-          logo's square edges into the dark band. */}
-      <div className="pointer-events-none absolute start-1/2 top-1/2 h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 sm:h-[min(150vw,56rem)] sm:w-[min(150vw,56rem)] rtl:translate-x-1/2">
+          logo's square edges into the dark band. On phones the stacked stat cards make the
+          section very tall, so the logo is pinned behind the headline instead of mid-section. */}
+      <div className="pointer-events-none absolute start-1/2 top-[11.5rem] h-[70vw] w-[70vw] -translate-x-1/2 -translate-y-1/2 sm:top-1/2 sm:h-[min(150vw,56rem)] sm:w-[min(150vw,56rem)] rtl:translate-x-1/2">
         <Image
           src="/logo.jpeg"
           alt=""
@@ -34,7 +35,7 @@ export function LandingHero({ hero }: { hero: LandingContent["hero"] }) {
           {hero.badge}
         </p>
 
-        <h1 className="display-heading mt-8 max-w-4xl text-balance text-4xl leading-[1.15] sm:text-6xl">
+        <h1 className="display-heading mt-8 max-w-5xl text-balance text-4xl leading-[1.15] sm:text-6xl">
           {hero.titleLines.map((line, i) => (
             <span
               key={i}

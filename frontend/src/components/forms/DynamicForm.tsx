@@ -123,7 +123,7 @@ export function DynamicForm({
       </div>
 
       {/* Honeypot — visually hidden, must stay empty. */}
-      <div aria-hidden className="absolute -left-[9999px]" tabIndex={-1}>
+      <div aria-hidden className="sr-only" tabIndex={-1}>
         <label>
           Website
           <input type="text" tabIndex={-1} autoComplete="off" {...register(HONEYPOT)} />

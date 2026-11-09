@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { ProcessSteps } from "@/components/detail/ProcessSteps";
 import { Container } from "@/components/ui/Container";
 import {
   ArrowBadge,
@@ -32,7 +33,6 @@ interface ServicesContent {
   hero: { label: string; title: string; subtitle: string };
   services: { eyebrow: string; title: string; subtitle: string; tags: string[]; items: { title: string; body: string }[] };
   deliverables: { eyebrow: string; title: string; tag: string; items: { title: string; body: string }[] };
-  process: { eyebrow: string; title: string; steps: { title: string; body: string }[] };
   more: string;
 }
 
@@ -66,15 +66,6 @@ const content: Record<Locale, ServicesContent> = {
         { title: "خطة التسويق والمبيعات", body: "تموضع العلامة، فهم الجمهور، القنوات، والقياس المرتبط بالإيراد." },
       ],
     },
-    process: {
-      eyebrow: "كيف نبدأ؟",
-      title: "رحلة تعاون واضحة",
-      steps: [
-        { title: "نفهم التحدّي", body: "جلسة تعريفية لمناقشة واقع شركتك واحتياجاتها." },
-        { title: "نحدّد النطاق", body: "نتفق على الأهداف والمخرجات وآلية العمل." },
-        { title: "ننطلق ونراجع", body: "تنفيذ مرحلي ومراجعة لما تحقق وما يحتاج تعديلًا." },
-      ],
-    },
     more: "استكشف التفاصيل",
   },
   en: {
@@ -104,15 +95,6 @@ const content: Record<Locale, ServicesContent> = {
         { title: "Organizational structure", body: "Structure, job descriptions, authorities, and coordination and accountability paths." },
         { title: "Strategic plan", body: "Company assessment, growth priorities, initiatives and tracking indicators." },
         { title: "Marketing & sales plan", body: "Brand positioning, audience insight, channels and revenue-linked measurement." },
-      ],
-    },
-    process: {
-      eyebrow: "How do we start?",
-      title: "A clear collaboration journey",
-      steps: [
-        { title: "We understand the challenge", body: "An intro session to discuss your company's situation and needs." },
-        { title: "We define the scope", body: "We agree on goals, deliverables and ways of working." },
-        { title: "We launch and review", body: "Phased delivery with reviews of what's achieved and what needs adjusting." },
       ],
     },
     more: "Explore details",
@@ -217,24 +199,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         </Container>
       </section>
 
-      {/* Process */}
-      <section className="bg-surface py-16 sm:py-24">
-        <Container>
-          <EditorialHeading eyebrow={c.process.eyebrow} title={c.process.title} />
-          <ol className="grid gap-10 md:grid-cols-3 md:gap-8">
-            {c.process.steps.map((step, i) => (
-              <li key={step.title} className="reveal">
-                <span className="block font-sans text-6xl font-extrabold leading-none text-accent sm:text-7xl">
-                  {num(i)}
-                </span>
-                <div className="mt-6 h-px bg-accent/60" aria-hidden />
-                <h3 className="mt-5 text-2xl font-bold text-fg">{step.title}</h3>
-                <p className="mt-2 text-sm text-muted">{step.body}</p>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
+      <ProcessSteps loc={loc} />
 
       <CtaBand rtl={rtl} {...ctaCopy[loc]} />
     </>

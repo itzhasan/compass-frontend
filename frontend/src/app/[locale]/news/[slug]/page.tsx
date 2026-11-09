@@ -1,19 +1,26 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
-import { CoverImage } from "@/components/CoverImage";
+import { Attachments } from "@/components/detail/Attachments";
+import { BackLink, DetailCover, DetailFooter, RelatedGrid } from "@/components/detail/DetailBlocks";
+import { DetailHero, HeroBadge } from "@/components/detail/DetailHero";
+import { Gallery } from "@/components/detail/Gallery";
 import { JsonLd } from "@/components/JsonLd";
 import { ShareButtons } from "@/components/ShareButtons";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ButtonExternal } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
+import { CtaBand, ctaCopy, ForwardArrow } from "@/components/ui/Editorial";
 import { RichText } from "@/components/ui/RichText";
 import { api } from "@/lib/api/client";
 import type { Locale } from "@/lib/api/types";
 import { formatDate } from "@/lib/format";
 import { newsLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
+import { listers, slugParams } from "@/lib/static-params";
+
+// Prebuild known slugs; new CMS items still render on demand.
+export const generateStaticParams = slugParams(listers.news);
+export const dynamicParams = true;
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -21,75 +28,94 @@ export async function generateMetadata({ params }: Props) {
   const { locale, slug } = await params;
   const news = await api.newsItem(locale as Locale, slug);
   if (!news) return {};
-  return buildMetadata(news.seo, news.alternates, locale as Locale);
+  return buildMetadata(news.seo, news.alternates, locale as Locale, { text: news.body, image: news.cover });
 }
 
 export default async function NewsDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const loc = locale as Locale;
+  const rtl = loc === "ar";
 
-  const [news, t, tn, common] = await Promise.all([
-    api.newsItem(loc, slug),
+  const news = await api.newsItem(loc, slug);
+  if (!news) notFound();
+
+  const [t, tn, td, common, latest] = await Promise.all([
     getTranslations("nav"),
     getTranslations("news"),
+    getTranslations("detail"),
     getTranslations("common"),
+    api.news(loc, { page: 1 }).catch(() => ({ data: [] })),
   ]);
-  if (!news) notFound();
+
+  const more = latest.data.filter((n) => n.slug !== news.slug).slice(0, 3);
+  const expiresOn =
+    news.expires_at && !news.is_expired ? td("expiresOn", { date: formatDate(news.expires_at, loc) }) : null;
 
   return (
     <article>
       <JsonLd data={newsLd(news, `/${loc}/news/${news.slug}`)} />
-      <div className="border-b border-border bg-surface">
-        <Container className="py-10">
-          <Breadcrumbs
-            items={[
-              { label: t("home"), href: "/" },
-              { label: t("news"), href: "/news" },
-              { label: news.title },
-            ]}
-          />
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <Badge tone="neutral">{news.category_label}</Badge>
-            {news.is_expired ? <Badge tone="warning">{common("expired")}</Badge> : null}
-          </div>
-          <h1 className="mt-3 text-3xl font-bold text-fg sm:text-4xl">{news.title}</h1>
-          {news.published_at ? (
-            <p className="mt-3 text-sm text-muted">{formatDate(news.published_at, loc)}</p>
-          ) : null}
-        </Container>
-      </div>
-
-      {news.cover ? (
-        <div className="relative aspect-[21/9] max-h-[420px] w-full">
-          <CoverImage src={news.cover} alt={news.title} sizes="100vw" priority />
-        </div>
-      ) : null}
-
-      <Container className="py-12">
-        <RichText html={news.body} />
-
-        {/* CTA is hidden by the API once the item has expired. */}
+      <DetailHero
+        loc={loc}
+        path={`/news/${news.slug}`}
+        crumbs={[
+          { label: t("home"), href: "/" },
+          { label: t("news"), href: "/news" },
+        ]}
+        label={td("labels.news")}
+        title={news.title}
+        badges={
+          <>
+            <HeroBadge>{news.category_label}</HeroBadge>
+            {news.is_expired ? <HeroBadge tone="warning">{common("expired")}</HeroBadge> : null}
+          </>
+        }
+        meta={[formatDate(news.published_at, loc), expiresOn]}
+      >
+        {/* The API drops `cta` once the item has expired. */}
         {news.cta ? (
-          <div className="mt-8">
-            <ButtonExternal href={news.cta.url}>{news.cta.label || tn("register")}</ButtonExternal>
-          </div>
+          <ButtonExternal href={news.cta.url} target="_blank" variant="secondary">
+            {news.cta.label || tn("register")}
+            <ForwardArrow rtl={rtl} />
+          </ButtonExternal>
         ) : null}
+      </DetailHero>
+
+      <DetailCover src={news.cover} alt={news.title} />
+
+      <Container className="max-w-3xl py-14 sm:py-16">
+        <RichText html={news.body} className="text-[1.05rem] leading-relaxed" />
 
         {news.gallery && news.gallery.length > 0 ? (
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {news.gallery.map((src, i) => (
-              <div key={i} className="relative aspect-square overflow-hidden rounded-[var(--radius)]">
-                <CoverImage src={src} alt="" sizes="(max-width: 640px) 50vw, 33vw" />
-              </div>
-            ))}
-          </div>
+          <section className="mt-12">
+            <h2 className="mb-4 text-xl font-bold text-fg">{td("gallery")}</h2>
+            <Gallery images={news.gallery} title={news.title} />
+          </section>
         ) : null}
 
-        <div className="mt-10 border-t border-border pt-6">
+        <Attachments title={td("attachments")} files={news.attachments ?? []} />
+
+        <DetailFooter>
           <ShareButtons title={news.title} />
-        </div>
+          <BackLink href="/news" label={td("backTo", { list: t("news") })} rtl={rtl} />
+        </DetailFooter>
       </Container>
+
+      <RelatedGrid
+        title={td("moreNews")}
+        items={more.map((n) => ({
+          href: `/news/${n.slug}`,
+          title: n.title,
+          category: n.category_label,
+          meta: formatDate(n.published_at, loc),
+          cover: n.cover,
+        }))}
+        cta={td("readNews")}
+        rtl={rtl}
+        surface
+      />
+
+      <CtaBand rtl={rtl} {...ctaCopy[loc]} />
     </article>
   );
 }

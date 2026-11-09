@@ -156,5 +156,61 @@
     "message": "نستخدم ملفات تعريف الارتباط للتحليلات لتحسين الموقع. يمكنك القبول أو الرفض.",
     "accept": "قبول",
     "decline": "رفض"
+  },
+  "detail": {
+    "labels": {
+      "news": "NEWS / 07",
+      "article": "INSIGHTS / 06",
+      "service": "SERVICE / 02",
+      "sector": "SECTOR / 04",
+      "package": "PACKAGE / 03",
+      "caseStudy": "CASE STUDY / 08",
+      "ecosystem": "ECOSYSTEM / 05"
+    },
+    "backTo": "العودة إلى {list}",
+    "moreNews": "أخبار أخرى",
+    "attachments": "المرفقات",
+    "expiresOn": "ينتهي في {date}",
+    "sources": "المصادر والمراجع",
+    "gallery": "معرض الصور",
+    "openImage": "عرض الصورة {n}",
+    "close": "إغلاق",
+    "previous": "السابق",
+    "next": "التالي",
+    "howWeWork": "كيف نعمل",
+    "sectorsServed": "قطاعات نخدمها بهذه الخدمة",
+    "relatedPackages": "باقات مرتبطة بهذه الخدمة",
+    "relatedServices": "خدمات نقدّمها لهذا القطاع",
+    "relatedArticles": "مقالات ذات صلة",
+    "keyFacts": "معلومات أساسية",
+    "price": "السعر",
+    "service": "الخدمة",
+    "published": "تاريخ النشر",
+    "readingTime": "مدة القراءة",
+    "preparedBy": "إعداد",
+    "tags": "الوسوم",
+    "readArticle": "اقرأ المقال",
+    "readNews": "اقرأ الخبر",
+    "viewService": "استكشف الخدمة",
+    "viewCase": "اطّلع على الحالة",
+    "viewPackage": "تفاصيل الباقة",
+    "tagFilter": "مقالات بوسم #{tag}",
+    "clearFilter": "إزالة الفلتر"
+  },
+  "caseStudies": {
+    "challenge": "التحدي",
+    "approach": "المنهجية",
+    "results": "النتائج",
+    "metrics": "أبرز الأرقام",
+    "sector": "القطاع",
+    "client": "العميل"
+  },
+  "ecosystem": {
+    "about": "نبذة",
+    "relationship": "علاقتنا",
+    "field": "مجال العمل",
+    "classification": "التصنيف",
+    "website": "زيارة الموقع",
+    "links": "روابط"
   }
 }

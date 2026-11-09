@@ -11,13 +11,13 @@
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
     "clsx": "^2.1.1",
-    "isomorphic-dompurify": "^4.3.0",
     "lucide-react": "^1.48.0",
     "next": "16.3.6",
     "next-intl": "^4.14.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-hook-form": "^7.88.0",
+    "sanitize-html": "^2.18.1",
     "tailwind-merge": "^3.7.0",
     "zod": "^3.25.76"
   },
@@ -26,6 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
     "tailwindcss": "^4",

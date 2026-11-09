@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 
 import { AnalyticsConsent } from "@/components/AnalyticsConsent";
@@ -18,12 +18,44 @@ import { localeDirection, routing } from "@/i18n/routing";
 
 import "../globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const plexArabic = IBM_Plex_Sans_Arabic({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-plex-arabic",
+// Brand typeface (Arabic + Latin) from the visual-identity kit. Skolar Sans draws small for
+// its size, so size-adjust scales the glyphs without touching layout: Arabic and Latin need
+// different amounts, hence two faces over the same files. next/font requires literal options,
+// so the src list can't be shared. Preloading is off because nine weights would all be
+// fetched up front; browsers load only the weights a page uses.
+const skolarArabic = localFont({
+  src: [
+    { path: "../../fonts/skolar-sans-100.woff2", weight: "100", style: "normal" },
+    { path: "../../fonts/skolar-sans-200.woff2", weight: "200", style: "normal" },
+    { path: "../../fonts/skolar-sans-300.woff2", weight: "300", style: "normal" },
+    { path: "../../fonts/skolar-sans-400.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/skolar-sans-500.woff2", weight: "500", style: "normal" },
+    { path: "../../fonts/skolar-sans-600.woff2", weight: "600", style: "normal" },
+    { path: "../../fonts/skolar-sans-700.woff2", weight: "700", style: "normal" },
+    { path: "../../fonts/skolar-sans-800.woff2", weight: "800", style: "normal" },
+    { path: "../../fonts/skolar-sans-900.woff2", weight: "900", style: "normal" },
+  ],
+  variable: "--font-skolar-arabic",
   display: "swap",
+  preload: false,
+  declarations: [{ prop: "size-adjust", value: "125%" }],
+});
+const skolarLatin = localFont({
+  src: [
+    { path: "../../fonts/skolar-sans-100.woff2", weight: "100", style: "normal" },
+    { path: "../../fonts/skolar-sans-200.woff2", weight: "200", style: "normal" },
+    { path: "../../fonts/skolar-sans-300.woff2", weight: "300", style: "normal" },
+    { path: "../../fonts/skolar-sans-400.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/skolar-sans-500.woff2", weight: "500", style: "normal" },
+    { path: "../../fonts/skolar-sans-600.woff2", weight: "600", style: "normal" },
+    { path: "../../fonts/skolar-sans-700.woff2", weight: "700", style: "normal" },
+    { path: "../../fonts/skolar-sans-800.woff2", weight: "800", style: "normal" },
+    { path: "../../fonts/skolar-sans-900.woff2", weight: "900", style: "normal" },
+  ],
+  variable: "--font-skolar-latin",
+  display: "swap",
+  preload: false,
+  declarations: [{ prop: "size-adjust", value: "140%" }],
 });
 
 export function generateStaticParams() {
@@ -67,7 +99,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={localeDirection[locale]}
-      className={`${inter.variable} ${plexArabic.variable} h-full antialiased`}
+      className={`${skolarArabic.variable} ${skolarLatin.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <JsonLd
