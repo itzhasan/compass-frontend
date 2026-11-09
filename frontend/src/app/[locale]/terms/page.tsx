@@ -13,7 +13,7 @@ type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
-  const page = await api.page(locale as Locale, "terms");
+  const page = await api.page(locale as Locale, "terms").catch(() => null);
   if (!page) return {};
   return buildMetadata(page.seo, page.alternates, locale as Locale);
 }
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function TermsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [page, t] = await Promise.all([api.page(locale as Locale, "terms"), getTranslations("footer")]);
+  const [page, t] = await Promise.all([api.page(locale as Locale, "terms").catch(() => null), getTranslations("footer")]);
   if (!page) notFound();
 
   return (

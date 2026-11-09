@@ -18,7 +18,11 @@ export default async function PartnerSponsorshipPage({ params }: { params: Promi
   setRequestLocale(locale);
   const loc = locale as Locale;
 
-  const [form, t] = await Promise.all([api.form(loc, "sponsorship"), getTranslations("nav")]);
+  const [form, t, tf] = await Promise.all([
+    api.form(loc, "sponsorship").catch(() => null),
+    getTranslations("nav"),
+    getTranslations("forms"),
+  ]);
 
   return (
     <>
@@ -28,7 +32,7 @@ export default async function PartnerSponsorshipPage({ params }: { params: Promi
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("partner") }]} />}
       />
       <Container className="max-w-2xl py-12">
-        {form ? <DynamicForm schema={form} /> : null}
+        {form ? <DynamicForm schema={form} /> : <p className="rounded-[var(--radius)] bg-surface p-4 text-sm text-muted">{tf("unavailable")}</p>}
       </Container>
     </>
   );

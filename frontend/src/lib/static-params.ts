@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import { api } from "@/lib/api/client";
 import type { Locale, Paginated } from "@/lib/api/types";
 
@@ -6,6 +7,9 @@ import type { Locale, Paginated } from "@/lib/api/types";
  * layout supplies the locale; each resource lists its slugs for that locale. Any API
  * failure yields `[]` so `next build` never fails when the CMS is unreachable — pages
  * still render on demand because the routes keep `dynamicParams = true`.
+ *
+ * Lists can come from the build's fetch cache (Vercel restores .next/cache) while a page's
+ * own data can't, so reachability is checked live, uncached, before listing any slugs.
  */
 
 type Lister = (locale: Locale) => Promise<{ slug: string }[]>;
@@ -37,8 +41,22 @@ export const listers = {
   ecosystem: (loc) => api.ecosystem(loc),
 } satisfies Record<string, Lister>;
 
+async function apiIsReachable(locale: string): Promise<boolean> {
+  const base = env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
+  try {
+    const res = await fetch(`${base}/api/v1/${locale}/settings`, {
+      cache: "no-store",
+      signal: AbortSignal.timeout(5000),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 export function slugParams(list: Lister) {
   return async function generateStaticParams({ params }: { params: { locale: string } }) {
+    if (!(await apiIsReachable(params.locale))) return [];
     try {
       const items = await list(params.locale as Locale);
       return [...new Set(items.map((i) => i.slug))].map((slug) => ({ slug }));

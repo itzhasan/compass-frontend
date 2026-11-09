@@ -136,7 +136,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const rtl = loc === "ar";
 
   // Founders are fixed copy; the CMS team only feeds the consultants grid.
-  const team = await api.team(loc);
+  const team = await api.team(loc).catch(() => []);
   const consultants = team.filter((m) => !m.is_founder);
   const founders = c.founders.items;
 

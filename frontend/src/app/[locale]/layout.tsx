@@ -12,6 +12,7 @@ import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { JsonLd } from "@/components/JsonLd";
 import { env } from "@/env";
 import { api } from "@/lib/api/client";
+import { fallbackSettings } from "@/lib/api/fallbacks";
 import type { Locale } from "@/lib/api/types";
 import { organizationLd, websiteLd } from "@/lib/jsonld";
 import { localeDirection, routing } from "@/i18n/routing";
@@ -89,7 +90,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const [settings, brand] = await Promise.all([
-    api.settings(locale),
+    api.settings(locale).catch(() => fallbackSettings),
     getTranslations({ locale, namespace: "brand" }),
   ]);
 

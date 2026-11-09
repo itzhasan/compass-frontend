@@ -25,7 +25,11 @@ export default async function BookConsultationPage({
   setRequestLocale(locale);
   const loc = locale as Locale;
 
-  const [form, t] = await Promise.all([api.form(loc, "consultation"), getTranslations("nav")]);
+  const [form, t, tf] = await Promise.all([
+    api.form(loc, "consultation").catch(() => null),
+    getTranslations("nav"),
+    getTranslations("forms"),
+  ]);
 
   // Preselect the sector/package the visitor arrived from.
   const presets: Record<string, string> = {};
@@ -40,7 +44,7 @@ export default async function BookConsultationPage({
         breadcrumbs={<Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: t("bookConsultation") }]} />}
       />
       <Container className="max-w-2xl py-12">
-        {form ? <DynamicForm schema={form} presets={presets} /> : null}
+        {form ? <DynamicForm schema={form} presets={presets} /> : <p className="rounded-[var(--radius)] bg-surface p-4 text-sm text-muted">{tf("unavailable")}</p>}
       </Container>
     </>
   );

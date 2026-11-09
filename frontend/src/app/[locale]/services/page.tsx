@@ -120,7 +120,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   const rtl = loc === "ar";
 
   // CMS services win when the API has them; otherwise fall back to the core four.
-  const apiServices = await api.services(loc);
+  const apiServices = await api.services(loc).catch(() => []);
   const services: CardItem[] =
     apiServices.length > 0
       ? apiServices.map((s, i) => ({
