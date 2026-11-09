@@ -227,7 +227,7 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
   const rtl = loc === "ar";
 
   // CMS packages win when the API has them; otherwise show the three core packages.
-  const apiPackages = await api.packages(loc);
+  const apiPackages = await api.packages(loc).catch(() => []);
   const plans: Plan[] =
     apiPackages.length > 0
       ? apiPackages.map((p, i, all) => fromApi(p, i, all, c))

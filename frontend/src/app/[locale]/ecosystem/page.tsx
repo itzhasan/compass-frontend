@@ -183,7 +183,7 @@ export default async function EcosystemPage({ params }: { params: Promise<{ loca
   const c = content[loc] ?? content.ar;
   const rtl = loc === "ar";
 
-  const entities = await api.ecosystem(loc);
+  const entities = await api.ecosystem(loc).catch(() => []);
   const members: Reference[] = entities.map((e) => ({
     tag: e.field_of_work ?? e.type_label,
     name: e.name,

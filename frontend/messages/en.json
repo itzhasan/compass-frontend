@@ -139,6 +139,7 @@
     "register": "Register"
   },
   "forms": {
+    "unavailable": "The form couldn't be loaded right now. Reach us directly by email or phone.",
     "submit": "Submit",
     "submitting": "Submitting…",
     "successTitle": "Thank you — we’ve received your request",

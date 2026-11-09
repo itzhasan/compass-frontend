@@ -184,7 +184,7 @@ export default async function SectorsPage({ params }: { params: Promise<{ locale
   const rtl = loc === "ar";
 
   // CMS sectors win when the API has them; otherwise list the core fourteen.
-  const apiSectors = await api.sectors(loc);
+  const apiSectors = await api.sectors(loc).catch(() => []);
   const sectors: SectorItem[] =
     apiSectors.length > 0
       ? apiSectors.map((s) => ({ name: s.name, href: `/sectors/${s.slug}` }))
