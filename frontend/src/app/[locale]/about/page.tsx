@@ -134,10 +134,19 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const c = content[loc] ?? content.ar;
   const rtl = loc === "ar";
 
-  // Founders are fixed copy; the CMS team only feeds the consultants grid.
+  // Founders come from the CMS (with photos); built-in founders not yet added in the
+  // admin stay listed, so nobody disappears from the page in the meantime.
   const team = await api.team(loc).catch(() => []);
   const consultants = team.filter((m) => !m.is_founder);
-  const founders = c.founders.items;
+  const cmsFounders = team
+    .filter((m) => m.is_founder)
+    .map((m) => ({ name: m.name, department: m.department ?? "", role: m.title ?? "", photo: m.photo }));
+  const norm = (name: string) => name.replace(/^(د\.|Dr\.)\s*/i, "").replace(/\s+/g, " ").trim().toLowerCase();
+  const cmsNames = new Set(cmsFounders.map((f) => norm(f.name)));
+  const founders = [
+    ...cmsFounders,
+    ...c.founders.items.filter((f) => !cmsNames.has(norm(f.name))).map((f) => ({ ...f, photo: null })),
+  ];
 
   return (
     <>
@@ -205,7 +214,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <div className="grid gap-5 md:grid-cols-2">
             {founders.map((f) => (
               <div key={f.name} className={`reveal ${cardClass}`}>
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  {f.photo ? (
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-surface-2">
+                      <CoverImage src={f.photo} alt={f.name} sizes="64px" className="absolute inset-0" />
+                    </div>
+                  ) : null}
                   <span className="text-xs font-semibold text-muted">{f.department}</span>
                 </div>
                 <h3 className="mt-5 text-2xl font-bold text-fg">{f.name}</h3>
