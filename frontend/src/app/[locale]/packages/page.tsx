@@ -4,12 +4,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import {
-  ArrowBadge,
   CtaBand,
   ctaCopy,
   EditorialHeading,
   EditorialHero,
-  editorialCard,
+  staticCard,
 } from "@/components/ui/Editorial";
 import { api } from "@/lib/api/client";
 import type { Locale, Package } from "@/lib/api/types";
@@ -260,10 +259,9 @@ export default async function PackagesPage({ params }: { params: Promise<{ local
           <EditorialHeading eyebrow={c.faq.eyebrow} title={c.faq.title} />
           <div className="grid gap-5 md:grid-cols-3">
             {c.faq.items.map((item, i) => (
-              <div key={item.q} className={cn("reveal", editorialCard)}>
+              <div key={item.q} className={cn("reveal", staticCard)}>
                 <div className="flex items-center justify-between">
                   <span className="font-sans text-xs font-semibold text-muted">{String(i + 1).padStart(2, "0")}</span>
-                  <ArrowBadge rtl={rtl} />
                 </div>
                 <h3 className="mt-5 text-xl font-bold text-fg">{item.q}</h3>
                 <p className="mt-3 text-sm text-muted">{item.a}</p>

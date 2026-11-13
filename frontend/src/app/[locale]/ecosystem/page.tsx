@@ -10,6 +10,7 @@ import {
   editorialCard,
   Eyebrow,
   ForwardArrow,
+  staticCard,
 } from "@/components/ui/Editorial";
 import { Link } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
@@ -210,7 +211,7 @@ export default async function EcosystemPage({ params }: { params: Promise<{ loca
                   key={p.title}
                   className={cn(
                     "reveal",
-                    editorialCard,
+                    staticCard,
                     featured ? "border-accent/70 bg-primary dark:bg-ink-2" : "border-transparent bg-white",
                   )}
                 >
@@ -218,7 +219,6 @@ export default async function EcosystemPage({ params }: { params: Promise<{ loca
                     <span className={cn("font-sans text-[0.65rem] font-semibold", featured ? "text-accent" : "text-[#5c6472]")}>
                       {p.tag}
                     </span>
-                    <ArrowBadge rtl={rtl} inverted={featured} />
                   </div>
                   <h3 className={cn("mt-5 text-2xl font-bold", featured ? "text-white" : "text-[#141924]")}>{p.title}</h3>
                   <p className={cn("mt-3 text-sm", featured ? "text-white/70" : "text-[#5c6472]")}>{p.body}</p>

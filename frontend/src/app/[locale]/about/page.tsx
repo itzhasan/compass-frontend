@@ -4,12 +4,11 @@ import { CoverImage } from "@/components/CoverImage";
 import { CompassMark } from "@/components/ui/CompassMark";
 import { Container } from "@/components/ui/Container";
 import {
-  ArrowBadge,
   CtaBand,
   ctaCopy,
   EditorialHeading,
   EditorialHero,
-  editorialCard as cardClass,
+  staticCard as cardClass,
   Eyebrow,
 } from "@/components/ui/Editorial";
 import { api } from "@/lib/api/client";
@@ -118,7 +117,7 @@ function TeamGrid({ members }: { members: TeamMember[] }) {
       {members.map((m) => (
         <div key={m.id} className={`${cardClass} text-center`}>
           <div className="relative mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full bg-surface-2">
-            <CoverImage src={m.photo} alt={m.name} sizes="96px" />
+            <CoverImage src={m.photo} alt={m.name} sizes="96px" className="absolute inset-0" />
           </div>
           <p className="font-bold text-fg">{m.name}</p>
           {m.title ? <p className="mt-1 text-sm text-muted">{m.title}</p> : null}
@@ -190,7 +189,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                   <span className="font-sans text-xs font-semibold text-muted">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <ArrowBadge rtl={rtl} />
                 </div>
                 <h3 className="mt-5 text-2xl font-bold text-fg">{v.title}</h3>
                 <p className="mt-3 text-sm text-muted">{v.body}</p>
@@ -209,7 +207,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               <div key={f.name} className={`reveal ${cardClass}`}>
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs font-semibold text-muted">{f.department}</span>
-                  <ArrowBadge rtl={rtl} />
                 </div>
                 <h3 className="mt-5 text-2xl font-bold text-fg">{f.name}</h3>
                 {f.role ? <p className="mt-3 text-sm text-muted">{f.role}</p> : null}
