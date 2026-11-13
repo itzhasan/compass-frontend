@@ -12,8 +12,14 @@ import { Container } from "./Container";
  * and CTA bands with a gold-needled compass, small eyebrows and arrow cards.
  */
 
+/** Card for links: lifts and gets a gold border on hover. Pair with <ArrowBadge>. */
 export const editorialCard =
   "group rounded-[var(--radius-lg)] border border-border bg-bg p-6 shadow-[0_10px_30px_-22px_rgba(20,25,36,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-accent/50";
+
+/** Same look for cards that aren't links: no hover effect and no arrow, so they don't
+ * suggest they can be opened. */
+export const staticCard =
+  "rounded-[var(--radius-lg)] border border-border bg-bg p-6 shadow-[0_10px_30px_-22px_rgba(20,25,36,0.35)]";
 
 /** Navy gradient band with a gold-needled compass on the trailing side. */
 export function NavyBand({ children, className }: { children: ReactNode; className?: string }) {
