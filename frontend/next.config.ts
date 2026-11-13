@@ -47,6 +47,18 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
+  // Form submissions go through this site and are forwarded server-side, so the browser
+  // never calls the API directly: an https page can't post to the plain-http backend, and
+  // no CORS is involved. Only the submission endpoint is forwarded.
+  async rewrites() {
+    const api = (process.env.NEXT_PUBLIC_API_URL ?? publicDefaults.NEXT_PUBLIC_API_URL).replace(/\/$/, "");
+    return [
+      {
+        source: "/api/v1/:locale/forms/:key/submissions",
+        destination: `${api}/api/v1/:locale/forms/:key/submissions`,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
