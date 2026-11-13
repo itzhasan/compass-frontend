@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 
 import { getLandingContent } from "@/components/landing/content";
+import { mergeLandingContent } from "@/components/landing/merge";
 import { ForceDarkTheme } from "@/components/landing/HomeChrome";
 import { LandingAbout } from "@/components/landing/LandingAbout";
 import { LandingClients } from "@/components/landing/LandingClients";
@@ -12,16 +13,20 @@ import { LandingSectors } from "@/components/landing/LandingSectors";
 import { LandingServices } from "@/components/landing/LandingServices";
 import { LandingStrategy } from "@/components/landing/LandingStrategy";
 import { LandingTeam } from "@/components/landing/LandingTeam";
+import { api } from "@/lib/api/client";
 import type { Locale } from "@/lib/api/types";
 
 /**
- * Homepage — a faithful replica of the Al-Bawsala reference landing page, built
- * as self-contained static sections. Always rendered in the dark "ink" palette.
+ * Homepage — a faithful replica of the Al-Bawsala reference landing page. Its copy is
+ * editable in the admin ("Home page content"); the built-in copy fills any gaps and is
+ * used as-is if the API is unreachable. Always rendered in the dark "ink" palette.
  */
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const c = getLandingContent(locale as Locale);
+  const loc = locale as Locale;
+  const edited = await api.homeContent(loc).catch(() => null);
+  const c = mergeLandingContent(getLandingContent(loc), edited);
 
   return (
     <div data-theme="dark" className="bg-bg text-fg">

@@ -87,6 +87,10 @@ export const api = {
   settings: (locale: Locale) =>
     apiGet<Item<Settings>>(locale, "settings", { tags: ["settings"] }).then((r) => r.data),
 
+  /** Admin-edited home page copy (shape of LandingContent); null if not available. */
+  homeContent: (locale: Locale) =>
+    apiGetOrNull<Item<unknown>>(locale, "home-content", { tags: ["home", "settings"] }).then((r) => r?.data ?? null),
+
   home: (locale: Locale) =>
     apiGet<Collection<HomeSection>>(locale, "home", { tags: ["home"] }).then((r) => r.data),
 
