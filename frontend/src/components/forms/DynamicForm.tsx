@@ -75,8 +75,9 @@ export function DynamicForm({
     fd.append("_started_at", String(startedAt));
     fd.append("captcha_token", token);
 
+    // Same-origin path, forwarded to the API by a rewrite in next.config.ts.
     const res = await fetch(
-      `${env.NEXT_PUBLIC_API_URL}/api/v1/${locale}/forms/${schema.key}/submissions`,
+      `/api/v1/${locale}/forms/${schema.key}/submissions`,
       { method: "POST", headers: { Accept: "application/json" }, body: fd },
     );
 
