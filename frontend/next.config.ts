@@ -1,11 +1,13 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import { publicDefaults } from "./src/config/public-env";
+
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 // Hosts that serve remote images (the API + the S3/MinIO media bucket).
-const apiUrl = new URL(process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000");
-const mediaUrl = new URL(process.env.NEXT_PUBLIC_MEDIA_URL ?? "http://127.0.0.1:9100");
+const apiUrl = new URL(process.env.NEXT_PUBLIC_API_URL ?? publicDefaults.NEXT_PUBLIC_API_URL);
+const mediaUrl = new URL(process.env.NEXT_PUBLIC_MEDIA_URL ?? publicDefaults.NEXT_PUBLIC_MEDIA_URL);
 
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
